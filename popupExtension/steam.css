@@ -1,0 +1,91 @@
+:root{
+    --bg1: rgba(93, 89, 211, 0.539);
+    --bg2: hsla(244, 62%, 39%, 0.539);
+    --score1: #03e6ff67;
+    --score0: hsla(0, 100%, 50%, 0.453);
+    --font-color: black;
+}
+*{color:var(--font-color);}
+body {
+    background: 
+            var(--bg1);
+}
+g text{fill:black}
+g rect{fill:hsla(244, 62%, 39%, 0.539);
+    }
+path {
+    stroke: currentColor;
+    stroke-width: 5px;
+    stroke-opacity: 0.0;
+}
+
+.grid-container {
+    background: linear-gradient(to right bottom,
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.05));
+
+}
+.graph-container {
+    background: hsla(0, 0%, 100%, 0.2);
+}
+.text-container {
+    background:hsla(0, 0%, 100%, 0.2);
+}
+
+.slice-0 {
+    fill:hsla(0, 100%, 50%, 0.453);
+}
+
+.slice-1 {
+    fill: #03e6ff67;
+}
+
+.review.slice-0::before {
+    color: #ff000083;
+}
+
+.review.slice-1::before {
+    color: #03e6ff67;
+}
+
+
+
+
+button {
+    font-size: 16px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    padding: 13px 20px 13px;
+    outline: 0;
+    border: 1px solid rgba(30, 18, 98, 0.371);
+    color:rgb(80, 15, 15);
+    cursor: pointer;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+button:after {
+    content: "";
+    background-color: #6982dd;
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    top: 7px;
+    left: 7px;
+    transition: 0.2s;
+}
+
+button:hover:after {
+    top: 0px;
+    left: 0px;
+}
+
+@media (min-width: 768px) {
+    button {
+        padding: 13px 50px 13px;
+    }
+}

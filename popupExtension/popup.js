@@ -1,14 +1,4 @@
 updateInfo();
-document.addEventListener('DOMContentLoaded', () => {
-	const slider = document.getElementById('slider');
-	const sliderValue = document.getElementById('slider-value');
-
-	slider.addEventListener('input', (event) => {
-		sliderValue.textContent = event.target.value;
-		localStorage.setItem('num-of-topics', event.target.value);
-		updateInfo()
-	});
-});
 
 function getIdByUrl(url) {
 	let id;
@@ -29,27 +19,31 @@ function getIdByUrl(url) {
 		platform: platform
 	}
 }
-function initTopicModel() {
+function initTopicModel() {//init all components
+	
 	const container = document.getElementById("title");
 	container.innerHTML = "";
+
+	const title = document.createElement("div");
+	
+	const bubbleChart = document.getElementById("bubble-chart");
+	bubbleChart.innerHTML = "";
+
+	const keywordPanel = document.getElementById("keyword-panel");
+	keywordPanel.innerHTML = "";
+
 	const button = document.createElement("button");
 	button.setAttribute("id", "return-button");
 	button.innerHTML = "&larr;"
-	const bubbleChart = document.getElementById("bubble-chart");
-	const keywordPanel = document.getElementById("keyword-panel");
-	bubbleChart.innerHTML = "";
-	keywordPanel.innerHTML = "";//init it
 
-	const title = document.createElement("div");
-	//title.innerHTML = id;
 	container.appendChild(button);
 	container.appendChild(title);
-	// const button = document.getElementById("return-button");
 	button.addEventListener("click", function () {
 		localStorage.setItem("query", JSON.stringify({}));
 		updateInfo();
 	})
 }
+
 async function fetchData(uri, init = true) {
 	try {
 		const response = await fetch(uri);
@@ -57,7 +51,6 @@ async function fetchData(uri, init = true) {
 			throw new Error('Request failed. Returned status: ' + response.status);
 		}
 		const data = await response.json();
-		console.log(data);
 
 		if (init === true) {
 			initTopicModel();
@@ -69,6 +62,7 @@ async function fetchData(uri, init = true) {
 	}
 }
 function addStylesheet(platform) {
+	//add dynamic css
 	const linkElement = document.createElement("link");
 	linkElement.rel = "stylesheet";
 	linkElement.href = platform + ".css";
@@ -79,6 +73,8 @@ function updateInfo(params = {
 	numOfTopics: localStorage.getItem('num-of-topics'),
 	query: localStorage.getItem('query'),
 }) {
+	//request topic model data update
+	//numOfTopics is currently offline from UI
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		let url = tabs[0].url;
 
@@ -92,7 +88,7 @@ function updateInfo(params = {
 		addStylesheet(app.platform);
 		
 		//fetch and visualize data
-		fetchData(local);
+		fetchData(uri);
 	})
 }
 

@@ -19,25 +19,25 @@ function getIdByUrl(url) {
 		platform: platform
 	}
 }
-function initTopicModel() {//init all components
-	
-	const container = document.getElementById("title");
-	container.innerHTML = "";
-
-	const title = document.createElement("div");
-	
-	const bubbleChart = document.getElementById("bubble-chart");
-	bubbleChart.innerHTML = "";
-
-	const keywordPanel = document.getElementById("keyword-panel");
-	keywordPanel.innerHTML = "";
-
+function initTopicModel() {
+	//init all components
 	const button = document.createElement("button");
 	button.setAttribute("id", "return-button");
 	button.innerHTML = "&larr;"
 
+	const bubbleChart = document.getElementById("bubble-chart");
+	const keywordPanel = document.getElementById("keyword-panel");
+	bubbleChart.innerHTML = "";
+	keywordPanel.innerHTML = "";//init it
+
+	const container = document.getElementById("title");
+	container.innerHTML = "";
+
+	const title = document.createElement("div");
 	container.appendChild(button);
 	container.appendChild(title);
+
+	//back to mixed sentiments
 	button.addEventListener("click", function () {
 		localStorage.setItem("query", JSON.stringify({}));
 		updateInfo();
@@ -51,16 +51,16 @@ async function fetchData(uri, init = true) {
 			throw new Error('Request failed. Returned status: ' + response.status);
 		}
 		const data = await response.json();
-
+		console.log(data);
 		if (init === true) {
 			initTopicModel();
 		}
-		showBubbleChart(data);
-
+		showBubbleChart(data);//call graph function
 	} catch (error) {
 		console.error(error);
 	}
 }
+
 function addStylesheet(platform) {
 	//add dynamic css
 	const linkElement = document.createElement("link");

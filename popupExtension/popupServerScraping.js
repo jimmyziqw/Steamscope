@@ -52,7 +52,7 @@ async function fetchData(uri, init = true) {
 			throw new Error('Request failed. Returned status: ' + response.status);
 		}
 		const data = await response.json();
-		console.log(data);
+		//console.log(data);
 		if (init === true) {
 			initTopicModel();
 		}
@@ -82,6 +82,7 @@ function updateInfo(params = {
 		//find server uri
 		const app = getIdByUrl(url);
 		const path = `${app.platform}/${app.id}/data?${new URLSearchParams(params)}`
+		console.log('path',path)
 		const uri = 'http://18.204.203.44:8080/' + path;
 		const local = 'http://127.0.0.1:8080/' + path;
 

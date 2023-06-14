@@ -98,7 +98,7 @@ export default function updateInfo(params = {
 	//numOfTopics is currently offline from UI
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		let url = tabs[0].url;
-
+		console.log(params.query,"query")
 		//find server uri
 		const app = getIdByUrl(url);
 		const path = `${app.platform}/${app.id}/data?${new URLSearchParams(params)}`
@@ -113,6 +113,7 @@ export default function updateInfo(params = {
 		.then(data =>
 			data.filter(({ review }) => {
 				const wordCount = review.split(' ').length;
+				//console.log(data,"data before posting");
 				return wordCount > 5 && wordCount < 100;
 			})
 		)

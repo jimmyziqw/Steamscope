@@ -2,7 +2,7 @@
 import getReviews from './steamScraper.js';
 //import showBubbleChart from './dashboard.js';
 //const localStorage = require('./userSettings.js')
-const NUM_REVIEWS = 500;
+const NUM_REVIEWS = 10000;
 const APP_ID = 570;
 const params = {
     numOfTopics: 7,
@@ -26,7 +26,8 @@ getReviews( APP_ID, NUM_REVIEWS)
             sentiment: voted_up ? 1 : 0
         })
     ))
-    .then(data =>postData(URI, data))
+    .then(data => { console.log(getSizeInBytes(data))})
+    //.then(data =>postData(URI, data))
     //.then(showBubbleChart(data))
     .then(data => console.log(data, "print data here"))
     .catch(err => { console.log(err); });
@@ -48,4 +49,13 @@ async function postData(uri, postData, init = true) {
     } catch (error) {
         console.error(error);
     }
+}
+
+function getSizeInBytes(list) {
+    let totalSize = 0;
+    list.forEach(obj => {
+        const jsonString = JSON.stringify(obj);
+        totalSize += new Blob([jsonString], { type: 'application/json' }).size;
+    });
+    return totalSize;
 }

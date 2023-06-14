@@ -201,7 +201,7 @@ function showRepresentativeDocs(keyword, topicKeywords, reviews) {
 
         // add event listener for button click
         button.addEventListener('click', () => {
-            reviewContainer = document.getElementById("review-container");
+            const reviewContainer = document.getElementById("review-container");
             reviewContainer.innerHTML = "";
             maxDocNum += 20;
             showReviews(maxDocNum);

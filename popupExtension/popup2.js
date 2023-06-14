@@ -1,5 +1,5 @@
 import showBubbleChart from './dashboard.js';
-import getReviews from './steamScraper.js';
+import updateReviews from './steamScraper.js';
 updateInfo();
 
 function getIdByUrl(url) {
@@ -24,19 +24,6 @@ function getIdByUrl(url) {
 
 
 
-//const localStorage = require('./userSettings.js')
-// const NUM_REVIEWS = 300;
-// const APP_ID = 570;
-// const params = {
-// 	numOfTopics: 7,
-// 	query: JSON.stringify({})
-// };
-
-// const path = `steam/${APP_ID}/data?${new URLSearchParams(params)}`
-// const URI = 'http://127.0.0.1:8080/' + path;
-
-// get review and preprocess
-
 
 async function postData(uri, postData, init = true) {
 	try {
@@ -49,9 +36,8 @@ async function postData(uri, postData, init = true) {
 			throw new Error('Request failed. Returned status: ' + response.status);
 		}
 		const data = await response.json();
+		
 		return data;
-		//if (init === true) {initTopicModel();}
-		//showBubbleChart(data);
 	} catch (error) {
 		console.error(error);
 	}
@@ -92,7 +78,9 @@ function addStylesheet(platform) {
 
 export default function updateInfo(params = {
 	numOfTopics: localStorage.getItem('num-of-topics'),
+	numOfReviews: localStorage.getItem('num-of-reviews'),
 	query: localStorage.getItem('query'),
+	dataInCache: localStorage.getItem('data-in-cache')
 }) {
 	//request topic model data update
 	//numOfTopics is currently offline from UI
@@ -101,35 +89,34 @@ export default function updateInfo(params = {
 		console.log(params.query,"query")
 		//find server uri
 		const app = getIdByUrl(url);
-		const path = `${app.platform}/${app.id}/data?${new URLSearchParams(params)}`
+
+		// let { numOfTopics, query } = params;
+		// let searchParams = { numOfTopics, query };
+		let searchParams = {
+			params: params.numOfTopics,
+			query: params.query
+		};
+		const path = `${app.platform}/${app.id}/data?${new URLSearchParams(searchParams)}`
 		const uri = 'http://18.204.203.44:8080/' + path;
 		const local = 'http://127.0.0.1:8080/' + path;
 
 		//add custom css
 		addStylesheet(app.platform);
-		
+	
+		console.log(params.dataInCache.appid, "datain cache");
 
-	getReviews(app.id, 1000)
-		.then(data =>
-			data.filter(({ review }) => {
-				const wordCount = review.split(' ').length;
-				//console.log(data,"data before posting");
-				return wordCount > 5 && wordCount < 100;
-			})
-		)
-		.then(data => data.map(
-			({ review, voted_up }) => ({
-				review,
-				sentiment: voted_up ? 1 : 0
-			})
-		))
+		const dataInCache = JSON.parse(params.dataInCache);
+		updateReviews(app.id, params.numOfReviews, dataInCache)
+		// responseData = postData(local, data);
+		// initTopicModel();
+		// showBubbleChart(responseData);
 		.then(data =>
 			postData(local, data))
 		.then(data => {
-			initTopicModel();
-			showBubbleChart(data);
-		})
-		//.then(data => console.log(data[0]))
+		 	initTopicModel();
+		 	showBubbleChart(data);
+		 })
+		//.then(data => console.log(data))
 		.catch(err => { console.log(err); });
 	
 	})

@@ -1,5 +1,4 @@
 import showBubbleChart from './dashboard.js';
-import getReviews from './steamScraper.js';
 updateInfo();
 
 function getIdByUrl(url) {
@@ -21,42 +20,6 @@ function getIdByUrl(url) {
 		platform: platform
 	}
 }
-
-
-
-//const localStorage = require('./userSettings.js')
-// const NUM_REVIEWS = 300;
-// const APP_ID = 570;
-// const params = {
-// 	numOfTopics: 7,
-// 	query: JSON.stringify({})
-// };
-
-// const path = `steam/${APP_ID}/data?${new URLSearchParams(params)}`
-// const URI = 'http://127.0.0.1:8080/' + path;
-
-// get review and preprocess
-
-
-async function postData(uri, postData, init = true) {
-	try {
-		const response = await fetch(uri, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(postData),
-		});
-		if (!response.ok) {
-			throw new Error('Request failed. Returned status: ' + response.status);
-		}
-		const data = await response.json();
-		return data;
-		//if (init === true) {initTopicModel();}
-		//showBubbleChart(data);
-	} catch (error) {
-		console.error(error);
-	}
-}
-
 function initTopicModel() {
 	//init all components
 	const button = document.createElement("button");
@@ -66,7 +29,7 @@ function initTopicModel() {
 	const bubbleChart = document.getElementById("bubble-chart");
 	const keywordPanel = document.getElementById("keyword-panel");
 	bubbleChart.innerHTML = "";
-	keywordPanel.innerHTML = "";
+	keywordPanel.innerHTML = "";//init it
 
 	const container = document.getElementById("title");
 	container.innerHTML = "";
@@ -82,6 +45,23 @@ function initTopicModel() {
 	})
 }
 
+async function fetchData(uri, init = true) {
+	try {
+		const response = await fetch(uri);
+		if (!response.ok) {
+			throw new Error('Request failed. Returned status: ' + response.status);
+		}
+		const data = await response.json();
+		console.log(data);
+		if (init === true) {
+			initTopicModel();
+		}
+		showBubbleChart(data);//call graph function
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 function addStylesheet(platform) {
 	//add dynamic css
 	const linkElement = document.createElement("link");
@@ -90,7 +70,7 @@ function addStylesheet(platform) {
 	document.head.appendChild(linkElement);
 }
 
-export default function updateInfo(params = {
+function updateInfo(params = {
 	numOfTopics: localStorage.getItem('num-of-topics'),
 	query: localStorage.getItem('query'),
 }) {
@@ -108,29 +88,8 @@ export default function updateInfo(params = {
 		//add custom css
 		addStylesheet(app.platform);
 		
-
-	getReviews(app.id, 1000)
-		.then(data =>
-			data.filter(({ review }) => {
-				const wordCount = review.split(' ').length;
-				return wordCount > 5 && wordCount < 100;
-			})
-		)
-		.then(data => data.map(
-			({ review, voted_up }) => ({
-				review,
-				sentiment: voted_up ? 1 : 0
-			})
-		))
-		.then(data =>
-			postData(local, data))
-		.then(data => {
-			initTopicModel();
-			showBubbleChart(data);
-		})
-		//.then(data => console.log(data[0]))
-		.catch(err => { console.log(err); });
-	
+		//fetch and visualize data
+		fetchData(uri);
 	})
 }
 

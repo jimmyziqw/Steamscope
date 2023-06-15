@@ -42,35 +42,38 @@ async function getReviews(appid, n, cursor = '*') {
         }
         reviews = reviews.concat(response.reviews);
     }
-    console.log(reviews, cursor);
+    //console.log(reviews, cursor);
     return {reviews, cursor};
 }
 
 export default async function updateReviews(appid, n, data) {
-    const reviewInCache = data.reviews
+    const reviewInCache = data.reviews;
+    console.log(data,"data in updateReviews")
+    const percToScrapeMore = 0.1;
     // need browser to look up localStorage
     // let newReviews;
     // let cursor;
     let reviewObj;
-    if (reviewInCache.length === n && appid === data.appid) {
+    if (appid === data.appid) {
         console.log("no scrap")
         return data.reviews
-    } else if (data.reviews.length < n && appid === data.appid) {
-        console.log("scrap more", reviewInCache.length)
-        reviewObj = await getReviews(appid, n - data.reviews.length, data.cursor);
-        //console.log("new reviews", newReviews);
-        reviewObj.reviews = processData(reviewObj.reviews).concat(reviewInCache);
-        //return newReviews
+    } //else if (data.reviews.length < n*percToScrapeMore && appid === data.appid) {
+        // console.log("scrap more", reviewInCache.length)
+        // reviewObj = await getReviews(appid, n - data.reviews.length, data.cursor);
+        // //console.log("new reviews", newReviews);
+        // reviewObj.reviews = processData(reviewObj.reviews).concat(reviewInCache);
+        // //return newReviews
 
-    } else {
+        //}
+     else {
         console.log("new scrap");
         reviewObj = await getReviews(appid, n);
         reviewObj.reviews = processData(reviewObj.reviews)
-        localStorage.setItem('data-in-cache', JSON.stringify({
-            appid,
-            cursor:reviewObj.cursor,
-            reviews: reviewObj.reviews 
-        }))
+        // localStorage.setItem('data-in-cache', JSON.stringify({
+        //     appid,
+        //     cursor:reviewObj.cursor,
+        //     reviews: reviewObj.reviews 
+        // }))
     }
     console.log(reviewObj.reviews)
     return reviewObj.reviews  

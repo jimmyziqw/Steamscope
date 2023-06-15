@@ -50,7 +50,7 @@ export default function showBubbleChart(data) {
         .sort(null);
             
         //color range
-        const sentiments = circleArray.map(x=>Object.keys(x.sentiment).length);
+    const sentiments = circleArray.map(x=>Object.keys(x.sentiment).length);
     const maxScore = Math.max(...sentiments)
     let sentimentDomain;
     if (maxScore == 2) {
@@ -58,7 +58,8 @@ export default function showBubbleChart(data) {
     } else if (maxScore ==5) {
         sentimentDomain = [1, 2, 3, 4, 5];
     } else if (maxScore ==1) {
-        sentimentDomain = Object.keys(circleArray[0].sentiment);
+        sentimentDomain = Object.keys(circleArray[0].sentiment).concat(["*"]);
+
     }
   
     
@@ -119,7 +120,12 @@ const legendItems = legend.selectAll(".legend-item")
         .text(d => d);
  
     legendItems.on('click', function (event, d) {
-        localStorage.setItem("query", JSON.stringify({ sentiment: d }));
+        if (d == "*") {
+            localStorage.setItem("query", JSON.stringify({}));
+        } else {
+            localStorage.setItem("query", JSON.stringify({ sentiment: d }));
+        }
+        
         updateInfo();
     });
     

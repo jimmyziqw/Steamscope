@@ -103,18 +103,25 @@ export default function updateInfo(params = {
 		//add custom css
 		addStylesheet(app.platform);
 	
-		console.log(params.dataInCache.appid, "datain cache");
+		
 
 		const dataInCache = JSON.parse(params.dataInCache);
+		console.log(dataInCache.appid, "appid");
 		updateReviews(app.id, params.numOfReviews, dataInCache)
-		// responseData = postData(local, data);
-		// initTopicModel();
-		// showBubbleChart(responseData);
 		.then(data =>
 			postData(local, data))
-		.then(data => {
+			.then(responseData => {
+				if (Object.keys(JSON.parse(params.query)).length===0) {
+					let data = {
+						appid: app.id,
+						//cursor: dataInCache.cursor,
+						reviews: responseData.reviews
+					}
+					console.log('responseData', responseData)
+					localStorage.setItem('data-in-cache', JSON.stringify(data));
+			}
 		 	initTopicModel();
-		 	showBubbleChart(data);
+		 	showBubbleChart(responseData);
 		 })
 		//.then(data => console.log(data))
 		.catch(err => { console.log(err); });

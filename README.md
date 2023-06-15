@@ -12,7 +12,7 @@ Chrome extensions that are not hosted on the Chrome Web Store require manual ins
 
     Click the following link to download the Chrome Extension:
 
-    [Download PopupExtension](https://github.com/username/repository/raw/main/popupExtension.zip)
+    [Download PopupExtension](https://github.com/jimmyziqw/topic-visualizer-chrome-extension/blob/main/popupExtension.zip)
 
     This will download a zipped file named `popupExtension.zip`.
 

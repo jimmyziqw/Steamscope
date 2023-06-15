@@ -23,8 +23,6 @@ function getIdByUrl(url) {
 }
 
 
-
-
 async function postData(uri, postData, init = true) {
 	try {
 		const response = await fetch(uri, {
@@ -45,10 +43,6 @@ async function postData(uri, postData, init = true) {
 
 function initTopicModel() {
 	//init all components
-	const button = document.createElement("button");
-	button.setAttribute("id", "return-button");
-	button.innerHTML = "&larr;"
-
 	const bubbleChart = document.getElementById("bubble-chart");
 	const keywordPanel = document.getElementById("keyword-panel");
 	bubbleChart.innerHTML = "";
@@ -58,15 +52,8 @@ function initTopicModel() {
 	container.innerHTML = "";
 
 	const title = document.createElement("div");
-	container.appendChild(button);
 	container.appendChild(title);
-
-	//back to mixed sentiments
-	button.addEventListener("click", function () {
-		localStorage.setItem("query", JSON.stringify({}));
-		updateInfo();
-	})
-}
+ }
 
 function addStylesheet(platform) {
 	//add dynamic css
@@ -82,16 +69,11 @@ export default function updateInfo(params = {
 	query: localStorage.getItem('query'),
 	dataInCache: localStorage.getItem('data-in-cache')
 }) {
-	//request topic model data update
-	//numOfTopics is currently offline from UI
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		let url = tabs[0].url;
 		console.log(params.query,"query")
 		//find server uri
 		const app = getIdByUrl(url);
-
-		// let { numOfTopics, query } = params;
-		// let searchParams = { numOfTopics, query };
 		let searchParams = {
 			params: params.numOfTopics,
 			query: params.query
@@ -103,8 +85,6 @@ export default function updateInfo(params = {
 		//add custom css
 		addStylesheet(app.platform);
 	
-		
-
 		const dataInCache = JSON.parse(params.dataInCache);
 		console.log(dataInCache.appid, "appid");
 		updateReviews(app.id, params.numOfReviews, dataInCache)
@@ -114,7 +94,6 @@ export default function updateInfo(params = {
 				if (Object.keys(JSON.parse(params.query)).length===0) {
 					let data = {
 						appid: app.id,
-						//cursor: dataInCache.cursor,
 						reviews: responseData.reviews
 					}
 					console.log('responseData', responseData)
@@ -123,7 +102,6 @@ export default function updateInfo(params = {
 		 	initTopicModel();
 		 	showBubbleChart(responseData);
 		 })
-		//.then(data => console.log(data))
 		.catch(err => { console.log(err); });
 	
 	})

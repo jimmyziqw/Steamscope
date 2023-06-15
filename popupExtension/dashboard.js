@@ -187,7 +187,6 @@ function showHistogram(topic_idx, data, docs){
 const parentElement = document.getElementById("review-container");
 
 function showRepresentativeDocs(keyword, topicKeywords, reviews) {
-    let docNum = 3
     const reviewWithKeyword = reviews.filter(x => x.review.includes(keyword));
     const docQueried = findTopNDocumentsByDensity(reviewWithKeyword, topicKeywords, "max")
     
@@ -195,25 +194,8 @@ function showRepresentativeDocs(keyword, topicKeywords, reviews) {
     if (parentElement !== null) {
         parentElement.innerHTML = "";
     }
-    if (docQueried.length >= docNum) {
-   
-        //add onclick effect
-        const container = document.getElementById('button-container');
-        const button = document.createElement('button');
-        button.setAttribute("id", "load-more-button");
-        button.textContent = 'Load more';
-        container.innerHTML = "";
-        container.appendChild(button);
-
-        // add event listener for button click
-        button.addEventListener('click', () => {
-            const reviewContainer = document.getElementById("review-container");
-            reviewContainer.innerHTML = "";
-            maxDocNum += 20;
-            showReviews(maxDocNum);
-        });
-    }
-    var maxDocNum = Math.min(docNum, docQueried.length);
+    
+    var maxDocNum = Math.min(50, docQueried.length);
     showReviews(maxDocNum);
     function showReviews(maxDocNum) {
         for (let i = 0; i < maxDocNum; i++) {
@@ -225,7 +207,7 @@ function showRepresentativeDocs(keyword, topicKeywords, reviews) {
             parentElement.appendChild(divElement);
         }
         const searchMessage = document.getElementById("search-result");
-        searchMessage.innerHTML = `${docQueried.length} reviews found, ${maxDocNum} reviews shown`
+        searchMessage.innerHTML = `${docQueried.length} reviews found`
     };
 }
 function highlightDocs(keywords, text){

@@ -47,54 +47,20 @@ async function getReviews(appid, n, cursor = '*') {
 }
 
 export default async function updateReviews(appid, n, data) {
-    const reviewInCache = data.reviews;
-    console.log(data,"data in updateReviews")
-    const percToScrapeMore = 0.1;
-    // need browser to look up localStorage
-    // let newReviews;
-    // let cursor;
     let reviewObj;
     if (appid === data.appid) {
         console.log("no scrap")
         return data.reviews
-    } //else if (data.reviews.length < n*percToScrapeMore && appid === data.appid) {
-        // console.log("scrap more", reviewInCache.length)
-        // reviewObj = await getReviews(appid, n - data.reviews.length, data.cursor);
-        // //console.log("new reviews", newReviews);
-        // reviewObj.reviews = processData(reviewObj.reviews).concat(reviewInCache);
-        // //return newReviews
-
-        //}
-     else {
+    } else {
         console.log("new scrap");
         reviewObj = await getReviews(appid, n);
         reviewObj.reviews = processData(reviewObj.reviews)
-        // localStorage.setItem('data-in-cache', JSON.stringify({
-        //     appid,
-        //     cursor:reviewObj.cursor,
-        //     reviews: reviewObj.reviews 
-        // }))
     }
     console.log(reviewObj.reviews)
     return reviewObj.reviews  
 }
 
-// function(data) {
-     
-//      let newData =    data.filter(({ review }) => {
-//              const wordCount = review.split(' ').length;
-//              //console.log(data,"data before posting");
-//              return wordCount > 5 && wordCount < 100;
-//          })
-     
-//         .then(data => data.map(
-//             ({ review, voted_up }) => ({
-//                 review,
-//                 sentiment: voted_up ? 1 : 0
-//             })
-//         ))
-//     return newData;
-// }
+
 function processData(data) {
     let newData = data
         .filter(({ review }) => {

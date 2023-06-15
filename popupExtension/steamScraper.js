@@ -6,7 +6,6 @@ async function getReviewsPerRequest(appid, params) {
         throw new Error(`HTTP error! status: ${response.status}`);
     } else {
         const data = await response.json();  // convert the response to JSON format
-        //console.log(data,"await data")
         return data;
     }
    
@@ -42,7 +41,6 @@ async function getReviews(appid, n, cursor = '*') {
         }
         reviews = reviews.concat(response.reviews);
     }
-    //console.log(reviews, cursor);
     return {reviews, cursor};
 }
 

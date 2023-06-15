@@ -89,7 +89,7 @@ export default function updateInfo(params = {
 		console.log(dataInCache.appid, "appid");
 		updateReviews(app.id, params.numOfReviews, dataInCache)
 		.then(data =>
-			postData(local, data))
+			postData(uri, data))
 			.then(responseData => {
 				if (Object.keys(JSON.parse(params.query)).length===0) {
 					let data = {

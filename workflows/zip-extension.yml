@@ -1,0 +1,30 @@
+name: Zip Extension
+
+on:
+  push:
+    paths:
+      - 'popupExtension/**'
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install zip utility
+        run: sudo apt-get install zip
+
+      - name: Zip extension folder
+        run: zip -r popupExtension.zip popupExtension
+
+      - name: Commit and push zip file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add popupExtension.zip
+          git commit -m "Auto-generated zip of popupExtension folder" || echo "No changes to commit"
+          git push

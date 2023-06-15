@@ -1,7 +1,7 @@
 # Game Review Topic Explorer
 
 This Chrome extension provides an interactive visualization of the topic model analysis for game reviews. 
- 
+  ![alt text](feature.jpg)
 ## How to Install the PopupExtension Chrome Extension
 
 ### Manual Installation

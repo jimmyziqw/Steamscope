@@ -58,7 +58,7 @@ export default function showBubbleChart(data) {
     } else if (maxScore ==5) {
         sentimentDomain = [1, 2, 3, 4, 5];
     } else if (maxScore ==1) {
-        sentimentDomain = Object.keys(circleArray[0].sentiment).concat(["*"]);
+        sentimentDomain = Object.keys(circleArray[0].sentiment).concat(["-1"]);
 
     }
   
@@ -77,26 +77,26 @@ export default function showBubbleChart(data) {
 
 pieGroups.each(function(d) {
 
-  const arcGenerator = d3.arc()
-    .innerRadius((d.r+minRadius) * Math.min(width, height)-10)
-    .outerRadius((d.r+minRadius) * Math.min(width, height));
+    const arcGenerator = d3.arc()
+        .innerRadius((d.r+minRadius) * Math.min(width, height)-10)
+        .outerRadius((d.r+minRadius) * Math.min(width, height));
 
-  const pieData = pie(Object.entries(d.sentiment).map(([key, value]) => ({ label: key, value })));
+    const pieData = pie(Object.entries(d.sentiment).map(([key, value]) => ({ label: key, value })));
 
-  d3.select(this).selectAll("path")
-    .data(pieData)
-    .join("path")
-    .attr("d", arcGenerator)
-    .attr("class", d=> `slice-${d.data.label}`)
+    d3.select(this).selectAll("path")
+        .data(pieData)
+        .join("path")
+        .attr("d", arcGenerator)
+        .attr("class", d=> `slice-${d.data.label}`)
 });
-
+    
         
     showHistogram(0, keywordsWeights, docs);     
 
 
 //---legend---
 const legendRectSize = 18;
-const legendSpacing = 4;
+const legendSpacing = 5;
 const legend = canvas1.append("g")
     .attr("class", "legend")
     .attr("transform", `translate(${0}, ${height-legendRectSize-legendSpacing})`);
@@ -120,35 +120,38 @@ const legendItems = legend.selectAll(".legend-item")
         .text(d => d);
  
     legendItems.on('click', function (event, d) {
-        if (d == "*") {
+        if (d == "-1") {
             localStorage.setItem("query", JSON.stringify({}));
-        } else {
+        } else if (d != JSON.parse(localStorage.getItem('query')).sentiment){
             localStorage.setItem("query", JSON.stringify({ sentiment: d }));
-        }
+        } 
         
         updateInfo();
     });
+    pieGroups.append("circle")
+        .attr("r", d => (d.r + minRadius) * Math.min(width, height)) // Use the same radius as your pie chart
+        .attr("fill", "transparent") // Make the circle transparent
+        .style("cursor", "pointer") // Change the cursor style when hovering over the circle
+        .on("click", function (event, d) {
+            console.log(`showing topic ${d.topic_idx}`);
+            d3.selectAll("#histogram").remove();
+            showHistogram(d.topic_idx, keywordsWeights, docs);
+        });
     
-        //circles with pie chart
-        circles.on('click',function(event, d){
-                        console.log(`showing topic ${d.topic_idx}`);
-                        d3.selectAll("#histogram").remove();
-                        showHistogram(d.topic_idx, keywordsWeights, docs);
-                        });
 }
-//canvas 2: hist: term /topic;
+//canvas 2: histogram: word per topic;
 function showHistogram(topic_idx, data, docs){
-    var margin = { top: 0, right: 0, bottom: 0, left: 0 }
-        console.log(docs);
-        var wordsFreqArray = data.map(x=>x.map(y=>y[1]))[topic_idx];
-        var topWordsArray = data.map(x=>x.map(y=>y[0]))[topic_idx];
-        console.log(wordsFreqArray);
-        var canvasWidth = 100; 
-        var canvasHeight = 300;
-        var barHeight = 18;
-        var barSpaceHeight = 6;
-        var textOffset =0.5;
-        var canvas2 = d3.select("#keyword-panel")
+    console.log(docs);
+    var wordsFreqArray = data.map(x=>x.map(y=>y[1]))[topic_idx];
+    var topWordsArray = data.map(x=>x.map(y=>y[0]))[topic_idx];
+    console.log(wordsFreqArray);
+    var canvasWidth = 100; 
+    var canvasHeight = 300;
+    const histTopMargin = 10;
+    var barHeight = 18;
+    var barSpaceHeight = 6;
+    var textOffset =0.5;
+    var canvas2 = d3.select("#keyword-panel")
                 .append("svg")
                 .attr('id','histogram')
                 .attr("width", canvasWidth)
@@ -165,25 +168,24 @@ function showHistogram(topic_idx, data, docs){
     bars.append("rect")
         .attr("width", function(d){return xScale(d)})
         .attr("height", barHeight)
-        .attr("y", function(d,i){return i*(barHeight+barSpaceHeight)})
+        .attr("y", function(d,i){return histTopMargin+i*(barHeight+barSpaceHeight)})
         .attr("opacity", 0.5);
 
     bars.data(topWordsArray)
         .append("text")
         .attr("x", 10)
-        .attr("y", function(d,i){return (i+textOffset)*(barHeight+barSpaceHeight)})
+        .attr("y", function(d,i){return histTopMargin+(i+textOffset)*(barHeight+barSpaceHeight)})
         .attr("font-size","18px")
         .attr("font-family", "Serif, sans-serif")
         .text(x=>x);
     
-    
-
     bars.on("click",function(event,d){
         return showRepresentativeDocs(d, topWordsArray, docs)})
 
     showRepresentativeDocs(topWordsArray[0], topWordsArray, docs);
-    }
-//canvas 3: query representative //doc per term relationship
+}
+    
+//canvas 3: query representative 
 const parentElement = document.getElementById("review-container");
 
 function showRepresentativeDocs(keyword, topicKeywords, reviews) {

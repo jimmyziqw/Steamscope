@@ -12,13 +12,9 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-  background-color: #ff0000;
 }
 
 
-/* body {
-  overflow: auto;
-} */
 
 ::-webkit-scrollbar {
   display: none;
@@ -55,9 +51,7 @@ text{
   gap: 10px;
   padding: 10px;
 } 
-/* .graph-container{
-  padding:10px;
-} */
+
 .text-container{
   width: 420px;
 }
@@ -78,8 +72,6 @@ text{
 #keyword-panel  {
   grid-column: 2/span 1;
   grid-row: 2;
-
-  /* border-radius: 5px; */
 }
 footer {
   grid-row: 4;
@@ -102,6 +94,7 @@ footer {
   grid-column: 1 / span 2;
   grid-row: 3;
   height: 200px;
+  width:420px;
   overflow-y: auto;
 }
 

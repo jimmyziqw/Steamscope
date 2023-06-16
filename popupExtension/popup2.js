@@ -1,5 +1,5 @@
 import showBubbleChart from './dashboard.js';
-import updateReviews from './steamScraper.js';
+import updateReviews from './steamDataloader.js';
 updateInfo();
 
 function getIdByUrl(url) {
@@ -34,7 +34,7 @@ function showErrorMessage(message) {
 	title.style.height = "90vh";
 	title.style.textAlign = "center";
 	title.style.fontSize = "20px";
-	
+
 	title.innerHTML = message;	
 }
 async function postData(uri, postData) {
@@ -90,7 +90,8 @@ export default function updateInfo(params = {
 }) {
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		let url = tabs[0].url;
-		console.log(params.query,"query")
+		console.log(params.query, "query")
+		
 		//find server uri
 		const app = getIdByUrl(url);
 		let searchParams = {

@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Steam Review Explorer",
+    "name": "Steam Topicscope",
     "version": "0.0.1",
     "description": "An interactive steam review dashboard.",
     "icons": {

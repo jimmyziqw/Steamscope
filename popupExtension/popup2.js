@@ -3,27 +3,47 @@ import updateReviews from './steamScraper.js';
 updateInfo();
 
 function getIdByUrl(url) {
-	let id;
-	let platform;
-	if (url.includes("play.google.com")) {
-		const regex = /(?<=id=)[^&]+/;
-		id = url.match(regex)[0];
-		platform = "google-play";
-	} else if (url.includes("store.steampowered.com")) {
-		const regex = /(?:\/app\/)(\d+)/;
-		id = url.match(regex)[1];
-		platform = "steam";
+	let appid;
+	let pattern = /https:\/\/store\.steampowered\.com\/app\/(\d+)\/([\w\d]+)/;
+	let match = url.match(pattern);
+	if (match) {
+		appid = match[1];
+		let name = match[2];
+		console.log("Successfully find appid.")
+		return {
+			id: appid,
+			platform: "steam"
+		};
+	} else if (!match && url.includes("store.steampowered.com")) {
+		console.log("Not in app page")
+		showErrorMessage("Please navigate to an app page");	
+		return
 	} else {
-		console.log("url not match")
-	};
-	return {
-		id: id,
-		platform: platform
+		console.log("URL does not match the pattern, page to steam");
+		chrome.tabs.create({ url: "https://store.steampowered.com" })
+		return ;
 	}
 }
 
+function showErrorMessage(message) {
+	//dynamically edit style 
+	const title = document.getElementById("dashboard");
+	title.style.display = "flex";
+	title.style.justifyContent = "center";
+	title.style.alignItems = "center";
+	title.style.height = "90vh";
+	title.style.textAlign = "center";
+	title.style.fontSize = "20px";
+	
+	title.innerHTML = message;	
+}
+async function postData(uri, postData) {
+	if (postData.length <= 100) {
+		showErrorMessage(`Not enough reviews to analyze. Find ${postData.length} reviews.`);
+		console.log(`Not enough data. Current number: ${postData.length}`);
+		return 
+	}
 
-async function postData(uri, postData, init = true) {
 	try {
 		const response = await fetch(uri, {
 			method: 'POST',
@@ -34,7 +54,6 @@ async function postData(uri, postData, init = true) {
 			throw new Error('Request failed. Returned status: ' + response.status);
 		}
 		const data = await response.json();
-		
 		return data;
 	} catch (error) {
 		console.error(error);
@@ -79,8 +98,8 @@ export default function updateInfo(params = {
 			query: params.query
 		};
 		const path = `${app.platform}/${app.id}/data?${new URLSearchParams(searchParams)}`
-		const uri = 'http://18.204.203.44:8080/' + path;
-		const local = 'http://127.0.0.1:8080/' + path;
+		const URI = 'http://18.204.203.44:8080/' + path;
+		const LOCAL = 'http://127.0.0.1:8080/' + path;
 
 		//add custom css
 		addStylesheet(app.platform);
@@ -89,7 +108,7 @@ export default function updateInfo(params = {
 		console.log(dataInCache.appid, "appid");
 		updateReviews(app.id, params.numOfReviews, dataInCache)
 		.then(data =>
-			postData(uri, data))
+			postData(URI, data))
 			.then(responseData => {
 				if (Object.keys(JSON.parse(params.query)).length===0) {
 					let data = {

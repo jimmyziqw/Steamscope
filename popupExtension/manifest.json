@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "topic explorer1",
-    "version": "0.3",
-    "description": "A lightweight nlp package that builds game reviews dashboard.",
+    "name": "Steam Review Explorer",
+    "version": "0.0.1",
+    "description": "An interactive steam review dashboard.",
     "icons": {
       "16": "icon16.png",
       "32": "icon32.png",
@@ -10,7 +10,7 @@
       "128": "icon128.png"
     },
     "permissions": [
-      "activeTab"
+      "activeTab", "tabs"
     ],
     "action": {
       "default_popup": "popup.html"
@@ -22,7 +22,7 @@
   
     "content_scripts": [
       {
-        "matches": ["https://store.steampowered.com/*", "https://play.google.com/*"],
+        "matches": ["https://store.steampowered.com/*"],
         "js": ["popup2.js"]
       }
     ]

@@ -52,14 +52,14 @@ export default async function updateReviews(appid, n, data) {
     } else {
         console.log("new scrap");
         reviewObj = await getReviews(appid, n);
-        reviewObj.reviews = processData(reviewObj.reviews)
+        reviewObj.reviews = steamFormatter(reviewObj.reviews)
     }
     console.log(reviewObj.reviews)
     return reviewObj.reviews  
 }
 
 
-function processData(data) {
+function steamFormatter(data) {
     let newData = data
         .filter(({ review }) => {
             const wordCount = review.split(' ').length;

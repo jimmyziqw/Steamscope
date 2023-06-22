@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Topic Summarizer</title>
       <link rel="stylesheet" type="text/css" href="styles.css">
       <script src="d3.min.js"></script>
       <script src="userSettings.js"></script>
    </head>
    
    <body>
+      <div id = "loading"> Loading...  </div>
       <div class = "grid-container" id="dashboard">
-         <div id="title">
-            <div class="tools"></div>
-            <div class="loading"></div>
+         <div id="headline">
+            <div class="tools" id="legend-radio-buttons">
+               <input type="radio" id="down" name="direction" value="down" checked>
+               <label for="down">Voted Down</label>
+               <input type="radio" id="mixed" name="direction" value="mixed" checked>
+               <label for="mixed">Mixed Reviews</label>
+               <input type="radio" id="up" name="direction" value="up">
+               <label for="up">Voted Up</label>
+            </div>
          </div>
          
-         <div class = "graph-container" id="bubble-chart"></div>
-         <div class = "graph-container" id="keyword-panel"></div>
+         <div class = "graph-container" id="bubble-chart-container" >
+            <div class="graph-title"> Topics </div>
+            <div class = "graph" id="bubble-chart"> </div>
+         </div>
+         <div class = "graph-container" id="keyword-panel-container">
+            <div class="graph-title"> Keywords in Topic </div>
+            <div class="graph" id="keyword-panel"></div>
+         </div>
          
          <div class="graph-container" id="review-panel">
+            <div class="graph-title"> Reviews with Keyword</div>
             <div id="review-container"></div>
          </div>
 

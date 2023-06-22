@@ -25,10 +25,10 @@ path {
             rgba(255, 255, 255, 0.05));
 
 }
-.graph-container {
+/* .graph-container {
     background: hsla(0, 0%, 100%, 0.3);
     border: 20px;
-}
+} */
 
 .slice-0 {
     fill:hsla(0, 100%, 50%, 0.453);

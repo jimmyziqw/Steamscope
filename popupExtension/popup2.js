@@ -1,6 +1,9 @@
 import showBubbleChart from './dashboard.js';
 import updateReviews from './steamDataloader.js';
+
 updateInfo();
+
+
 
 function getIdByUrl(url) {
 	let appid;
@@ -26,16 +29,16 @@ function getIdByUrl(url) {
 }
 
 function showErrorMessage(message) {
-	//dynamically edit style 
-	const title = document.getElementById("dashboard");
-	title.style.display = "flex";
-	title.style.justifyContent = "center";
-	title.style.alignItems = "center";
-	title.style.height = "90vh";
-	title.style.textAlign = "center";
-	title.style.fontSize = "20px";
-
-	title.innerHTML = message;	
+	//dynamically edit style
+	const loadingScreen = document.getElementById("loading");
+	// loadingScreen.style.display = "flex";
+	// loadingScreen.style.justifyContent = "center";
+	// loadingScreen.style.alignItems = "center";
+	// loadingScreen.style.height = "90vh";
+	// loadingScreen.style.textAlign = "center";
+	// loadingScreen.style.fontSize = "20px";
+ 	//show message
+	loadingScreen.innerHTML = message;	
 }
 async function postData(uri, postData) {
 	if (postData.length <= 100) {
@@ -67,11 +70,12 @@ function initTopicModel() {
 	bubbleChart.innerHTML = "";
 	keywordPanel.innerHTML = "";
 
-	const container = document.getElementById("title");
-	container.innerHTML = "";
+	// const container = document.getElementById("headline");
+	// container.innerHTML = "";
 
-	const title = document.createElement("div");
-	container.appendChild(title);
+	const loadingScreen = document.getElementById("loading");
+	loadingScreen.style.display = "none";
+	//container.appendChild(loadingScreen);
  }
 
 function addStylesheet(platform) {
@@ -104,12 +108,14 @@ export default function updateInfo(params = {
 
 		//add custom css
 		addStylesheet(app.platform);
-	
 		const dataInCache = JSON.parse(params.dataInCache);
-		console.log(dataInCache.appid, "appid");
+		
+		//get
+		//console.log(dataInCache.appid, "appid");
+		console.log("")
 		updateReviews(app.id, params.numOfReviews, dataInCache)
 		.then(data =>
-			postData(URI, data))
+			postData(URI, data)) // SET PORT HERE
 			.then(responseData => {
 				if (Object.keys(JSON.parse(params.query)).length===0) {
 					let data = {

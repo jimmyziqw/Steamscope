@@ -89,45 +89,24 @@ pieGroups.each(function(d) {
         .attr("d", arcGenerator)
         .attr("class", d=> `slice-${d.data.label}`)
 });
-    
-        
+       
     showHistogram(0, keywordsWeights, docs);     
 
 
 //---legend---
-const legendRectSize = 18;
-const legendSpacing = 5;
-const legend = canvas1.append("g")
-    .attr("class", "legend")
-    .attr("transform", `translate(${0}, ${height-legendRectSize-legendSpacing})`);
-
-const legendItems = legend.selectAll(".legend-item")
-  .data(color.domain())
-  .join("g")
-    .attr("transform", (d, i) => `translate(
-        ${i * (legendRectSize + legendSpacing)+legendSpacing},
-        ${-height + legendRectSize + legendSpacing})`);
-
-    legendItems.append("rect")
-        .attr("width", legendRectSize)
-        .attr("height", legendRectSize)
-        .attr("class", d=> `slice-${d}`)
-        .style("stroke", "transparent");
-
-    legendItems.append("text")
-        .attr("x", 5)
-        .attr("y", legendRectSize - legendSpacing)
-        .text(d => d);
- 
-    legendItems.on('click', function (event, d) {
-        if (d == "-1") {
+    document.getElementById('legend-radio-buttons').addEventListener('change', function (event) {
+        let value = event.target.value;
+        // Your logic for each legend goes here
+        if (value === "mixed") {
             localStorage.setItem("query", JSON.stringify({}));
-        } else if (d != JSON.parse(localStorage.getItem('query')).sentiment){
-            localStorage.setItem("query", JSON.stringify({ sentiment: d }));
-        } 
-        
+        } else if (value === "up") {
+            localStorage.setItem("query", JSON.stringify({ sentiment: 1 }));
+        } else {
+            localStorage.setItem("query", JSON.stringify({ sentiment: 0 }));
+        }
         updateInfo();
     });
+    
     pieGroups.append("circle")
         .attr("r", d => (d.r + minRadius) * Math.min(width, height)) // Use the same radius as your pie chart
         .attr("fill", "transparent") // Make the circle transparent
@@ -270,3 +249,6 @@ function findTopNDocumentsByDensity(documents, keywords, n) {
     return sortedDocuments;
 }
 
+function forceDirectedGraph() {
+    //add rebel force between bubbles to avoid overlap
+}

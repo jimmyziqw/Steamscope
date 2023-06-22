@@ -46,3 +46,22 @@ path {
     color: #03e6ff67;
 }
 
+input[type="radio"] {
+    display: none;
+}
+
+/* create a custom radio button */
+input[type="radio"]+label:before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
+
+/* style the custom radio button when selected */
+input[type="radio"]:checked+label:before {
+    background-color: #3498DB;
+}

@@ -11,7 +11,7 @@ async function getReviewsPerRequest(appid, params) {
    
 }
 
-async function getReviews(appid, n, cursor = '*') {
+async function getReviewsFromAPI(appid, n, cursor = '*') {
     let reviews = [];
     let params = {
         json: 1,
@@ -44,20 +44,54 @@ async function getReviews(appid, n, cursor = '*') {
     return {reviews, cursor};
 }
 
-export default async function updateReviews(appid, n, data) {
-    let reviewObj;
-    if (appid === data.appid) {
-        console.log("no scrap")
-        return data.reviews
+export default async function updateReviews(appid, n, data, url) {
+    const response = await fetch(url);
+    if (response.status == 200) {
+        console.log("data received from db!");
+        const data = response.json();
+        return data;
+    } else if (response.status == 204) {
+        
+        console.log("data not received from db!");
+        let reviewObj;
+        if (appid === data.appid) {
+            console.log("no scrap")
+            return data.reviews
+        } else {
+            console.log("new scrap");
+            reviewObj = await getReviewsFromAPI(appid, n);
+            reviewObj.reviews = steamFormatter(reviewObj.reviews)
+        }
+        console.log("posting data..")
+        return postData(url, reviewObj.reviews)
     } else {
-        console.log("new scrap");
-        reviewObj = await getReviews(appid, n);
-        reviewObj.reviews = steamFormatter(reviewObj.reviews)
-    }
-    console.log(reviewObj.reviews)
-    return reviewObj.reviews  
+        console.error("error in GET method, status", response.status);
+    } 
+    
+    
 }
+async function postData(uri, postData) {
+    if (postData.length <= 100) {
+        showErrorMessage(`Not enough reviews to analyze. Find ${postData.length} reviews.`);
+        console.log(`Not enough data. Current number: ${postData.length}`);
+        return
+    }
 
+    try {
+        const response = await fetch(uri, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(postData),
+        });
+        if (!response.ok) {
+            throw new Error('Request failed. Returned status: ' + response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 function steamFormatter(data) {
     let newData = data

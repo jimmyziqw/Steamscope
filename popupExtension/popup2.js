@@ -29,39 +29,10 @@ function getIdByUrl(url) {
 }
 
 function showErrorMessage(message) {
-	//dynamically edit style
 	const loadingScreen = document.getElementById("loading");
-	// loadingScreen.style.display = "flex";
-	// loadingScreen.style.justifyContent = "center";
-	// loadingScreen.style.alignItems = "center";
-	// loadingScreen.style.height = "90vh";
-	// loadingScreen.style.textAlign = "center";
-	// loadingScreen.style.fontSize = "20px";
- 	//show message
 	loadingScreen.innerHTML = message;	
 }
-async function postData(uri, postData) {
-	if (postData.length <= 100) {
-		showErrorMessage(`Not enough reviews to analyze. Find ${postData.length} reviews.`);
-		console.log(`Not enough data. Current number: ${postData.length}`);
-		return 
-	}
 
-	try {
-		const response = await fetch(uri, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(postData),
-		});
-		if (!response.ok) {
-			throw new Error('Request failed. Returned status: ' + response.status);
-		}
-		const data = await response.json();
-		return data;
-	} catch (error) {
-		console.error(error);
-	}
-}
 
 function initTopicModel() {
 	//init all components
@@ -70,12 +41,9 @@ function initTopicModel() {
 	bubbleChart.innerHTML = "";
 	keywordPanel.innerHTML = "";
 
-	// const container = document.getElementById("headline");
-	// container.innerHTML = "";
-
 	const loadingScreen = document.getElementById("loading");
 	loadingScreen.style.display = "none";
-	//container.appendChild(loadingScreen);
+
  }
 
 function addStylesheet(platform) {
@@ -110,12 +78,10 @@ export default function updateInfo(params = {
 		addStylesheet(app.platform);
 		const dataInCache = JSON.parse(params.dataInCache);
 		
-		//get
-		//console.log(dataInCache.appid, "appid");
+		//GET data from DB; If not present then GET from API then POST data
 		console.log("")
-		updateReviews(app.id, params.numOfReviews, dataInCache)
-		.then(data =>
-			postData(URI, data)) // SET PORT HERE
+		updateReviews(app.id, params.numOfReviews, dataInCache,url=LOCAL)
+		// SET PORT HERE
 			.then(responseData => {
 				if (Object.keys(JSON.parse(params.query)).length===0) {
 					let data = {

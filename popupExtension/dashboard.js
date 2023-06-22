@@ -112,7 +112,7 @@ pieGroups.each(function(d) {
         .attr("fill", "transparent") // Make the circle transparent
         .style("cursor", "pointer") // Change the cursor style when hovering over the circle
         .on("click", function (event, d) {
-            console.log(`showing topic ${d.topic_idx}`);
+            //console.log(`showing topic ${d.topic_idx}`);
             d3.selectAll("#histogram").remove();
             showHistogram(d.topic_idx, keywordsWeights, docs);
         });
@@ -120,10 +120,10 @@ pieGroups.each(function(d) {
 }
 //canvas 2: histogram: word per topic;
 function showHistogram(topic_idx, data, docs){
-    console.log(docs);
+    //console.log(docs);
     var wordsFreqArray = data.map(x=>x.map(y=>y[1]))[topic_idx];
     var topWordsArray = data.map(x=>x.map(y=>y[0]))[topic_idx];
-    console.log(wordsFreqArray);
+    //console.log(wordsFreqArray);
     var canvasWidth = 100; 
     var canvasHeight = 300;
     const histTopMargin = 10;
@@ -180,7 +180,7 @@ function showRepresentativeDocs(keyword, topicKeywords, reviews) {
     showReviews(maxDocNum);
     function showReviews(maxDocNum) {
         for (let i = 0; i < maxDocNum; i++) {
-            console.log(i)
+            //console.log(i)
     
             const divElement = document.createElement("div");
             divElement.setAttribute("class", `review slice-${docQueried[i].sentiment}`);
@@ -195,13 +195,13 @@ function highlightDocs(keywords, text){
 //  keywords conversion with regular expression
     if (Array.isArray(keywords)){
         keywords = keywords.join("|")
-        console.log(text)
+        //console.log(text)
     } 
     var sentences = text.split(/(?<=[.!?])\s+(?=[A-Z])/);
-    console.log(sentences);
+    //console.log(sentences);
 
     var selectedSentences = sentences.filter(x => x.includes(keywords))
-    console.log(selectedSentences)
+    //console.log(selectedSentences)
     var stext = selectedSentences.join('...')
 
     const regex = new RegExp(keywords, 'gi');
@@ -213,7 +213,7 @@ function highlightDocs(keywords, text){
 
 function countDistinctKeywords(doc, keywords) {
     let count = 0;
-    console.log(doc, keywords);
+    //console.log(doc, keywords);
     keywords.forEach((keyword) => {
         if (doc.includes(keyword)) {
             count++;

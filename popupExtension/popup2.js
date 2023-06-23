@@ -41,7 +41,7 @@ function initTopicModel() {
 	bubbleChart.innerHTML = "";
 	keywordPanel.innerHTML = "";
 
-	const loadingScreen = document.getElementById("loading");
+	let loadingScreen = document.getElementById("loading");
 	loadingScreen.style.display = "none";
 
  }
@@ -84,12 +84,13 @@ export default function updateInfo(params = {
 		// SET PORT HERE
 			.then(responseData => {
 				if (Object.keys(JSON.parse(params.query)).length===0) {
+					
 					let data = {
 						appid: app.id,
 						reviews: responseData.reviews
-					}
+					};
 					console.log('responseData', responseData)
-					localStorage.setItem('data-in-cache', JSON.stringify(data));
+					//localStorage.setItem('data-in-cache', JSON.stringify(data));
 			}
 		 	initTopicModel();
 		 	showBubbleChart(responseData);

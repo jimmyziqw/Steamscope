@@ -40,12 +40,20 @@ async function getReviewsFromAPI(appid, n, cursor = '*') {
             break;
         }
         reviews = reviews.concat(response.reviews);
+        loadingProgress(`Collecting reviews ... (${reviews.length}/${n})`);
     }
     return {reviews, cursor};
 }
 
+function loadingProgress(message) {
+    let loading = document.getElementById("loading");
+    loading.innerHTML = message;
+}
+
 export default async function updateReviews(appid, n, data, url) {
     const response = await fetch(url);
+    
+    
     if (response.status == 200) {
         console.log("data received from db!");
         const data = response.json();
@@ -60,7 +68,8 @@ export default async function updateReviews(appid, n, data, url) {
         } else {
             console.log("new scrap");
             reviewObj = await getReviewsFromAPI(appid, n);
-            reviewObj.reviews = steamFormatter(reviewObj.reviews)
+            reviewObj.reviews = steamFormatter(reviewObj.reviews);
+            loadingProgress("Analyzing reviews ...");
         }
         console.log("posting data..")
         return postData(url, reviewObj.reviews)

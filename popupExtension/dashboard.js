@@ -104,6 +104,10 @@ pieGroups.each(function(d) {
         } else {
             localStorage.setItem("query", JSON.stringify({ sentiment: 0 }));
         }
+        //invoke loading screen
+        let loadingScreen = document.getElementById("loading");
+        loadingScreen.innerHTML = "Analyzing Reviews ..."
+        loadingScreen.style.display = "flex";
         updateInfo();
     });
     

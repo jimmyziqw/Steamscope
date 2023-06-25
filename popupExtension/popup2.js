@@ -41,7 +41,7 @@ function initTopicModel() {
 	bubbleChart.innerHTML = "";
 	keywordPanel.innerHTML = "";
 
-	let loadingScreen = document.getElementById("loading");
+	const loadingScreen = document.getElementById("loading");
 	loadingScreen.style.display = "none";
 
  }
@@ -80,20 +80,25 @@ export default function updateInfo(params = {
 		
 		//GET data from DB; If not present then GET from API then POST data
 		console.log("")
-		updateReviews(app.id, params.numOfReviews, dataInCache,url=LOCAL)
+		updateReviews(app.id, params.numOfReviews, dataInCache,url=URI)
 		// SET PORT HERE
 			.then(responseData => {
-				if (Object.keys(JSON.parse(params.query)).length===0) {
+				if ("reviews" in responseData) {
+					if (Object.keys(JSON.parse(params.query)).length === 0) {
 					
-					let data = {
-						appid: app.id,
-						reviews: responseData.reviews
-					};
-					console.log('responseData', responseData)
-					//localStorage.setItem('data-in-cache', JSON.stringify(data));
-			}
-		 	initTopicModel();
-		 	showBubbleChart(responseData);
+						let data = {
+							appid: app.id,
+							reviews: responseData.reviews
+						}
+						console.log('responseData', responseData)
+						localStorage.setItem('data-in-cache', JSON.stringify(data));
+					}
+					initTopicModel();
+					showBubbleChart(responseData);
+				} else if ("errorMessage" in responseData) {
+	
+					showErrorMessage(responseData.errorMessage);
+				}
 		 })
 		.catch(err => { console.log(err); });
 	

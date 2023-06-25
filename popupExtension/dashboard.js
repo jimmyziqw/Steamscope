@@ -1,4 +1,22 @@
 import updateInfo from './popup2.js'
+
+//---legend---
+document.getElementById('legend-radio-buttons').addEventListener('change', function (event) {
+    let value = event.target.value;
+    // Your logic for each legend goes here
+    if (value === "mixed") {
+        localStorage.setItem("query", JSON.stringify({}));
+    } else if (value === "up") {
+        localStorage.setItem("query", JSON.stringify({ sentiment: 1 }));
+    } else {
+        localStorage.setItem("query", JSON.stringify({ sentiment: 0 }));
+    }
+    //invoke loading screen
+    let loadingScreen = document.getElementById("loading");
+    loadingScreen.innerHTML = "Analyzing Reviews ..."
+    loadingScreen.style.display = "flex";
+    updateInfo();
+});
 export default function showBubbleChart(data) {
     //load data for three panels
     const circleArray = data["bubble-chart-data"]
@@ -93,23 +111,7 @@ pieGroups.each(function(d) {
     showHistogram(0, keywordsWeights, docs);     
 
 
-//---legend---
-    document.getElementById('legend-radio-buttons').addEventListener('change', function (event) {
-        let value = event.target.value;
-        // Your logic for each legend goes here
-        if (value === "mixed") {
-            localStorage.setItem("query", JSON.stringify({}));
-        } else if (value === "up") {
-            localStorage.setItem("query", JSON.stringify({ sentiment: 1 }));
-        } else {
-            localStorage.setItem("query", JSON.stringify({ sentiment: 0 }));
-        }
-        //invoke loading screen
-        let loadingScreen = document.getElementById("loading");
-        loadingScreen.innerHTML = "Analyzing Reviews ..."
-        loadingScreen.style.display = "flex";
-        updateInfo();
-    });
+
     
     pieGroups.append("circle")
         .attr("r", d => (d.r + minRadius) * Math.min(width, height)) // Use the same radius as your pie chart

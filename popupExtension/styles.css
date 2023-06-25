@@ -45,12 +45,12 @@ text{
   animation: loading 1s linear infinite;
 } */
 
-@keyframes loading {
+/* @keyframes loading {
   to {
     transform:rotate(1turn)
   }
   
-}
+} */
 .grid-container {
   display: grid;
   grid-template-columns: 300px 100px;
@@ -60,7 +60,10 @@ text{
   
 } 
 .graph-title {
-  height: 14px;
+  height: 12px;
+  font-size: 11px;
+  /* font-weight: bold; */
+  color: grey;
 }
 .text-container{
   width: 420px;
@@ -102,13 +105,16 @@ footer {
   grid-row: 3;
   height: 200px;
   width:420px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 .donut-center {
   fill: rgb(227, 246, 238)
 }
-
+#review-container {
+  overflow-y: auto;
+  height:180px;
+}
 .review::before {
   content: "\2022";
   margin-right: 0.5em;

@@ -44,9 +44,12 @@ async function getReviewsFromAPI(appid, n, cursor = '*') {
     }
     return {reviews, cursor};
 }
-
+function showErrorMessage(message) {
+    const loadingScreen = document.getElementById("loading");
+    loadingScreen.innerHTML = message;
+}
 function loadingProgress(message) {
-    let loading = document.getElementById("loading");
+    const loading = document.getElementById("loading");
     loading.innerHTML = message;
 }
 
@@ -58,6 +61,10 @@ export default async function updateReviews(appid, n, data, url) {
         console.log("data received from db!");
         const data = response.json();
         return data;
+    } else if (response.status == 202) {
+        //console.log(response.json());
+        return response.json();
+       
     } else if (response.status == 204) {
         
         console.log("data not received from db!");
@@ -68,6 +75,7 @@ export default async function updateReviews(appid, n, data, url) {
         } else {
             console.log("new scrap");
             reviewObj = await getReviewsFromAPI(appid, n);
+
             reviewObj.reviews = steamFormatter(reviewObj.reviews);
             loadingProgress("Analyzing reviews ...");
         }

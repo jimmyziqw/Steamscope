@@ -3,8 +3,6 @@ import updateReviews from './steamDataloader.js';
 
 updateInfo();
 
-
-
 function getIdByUrl(url) {
 	let appid;
 	let pattern = /https:\/\/store\.steampowered\.com\/app\/(\d+)\/([\w\d]+)/;
@@ -71,7 +69,7 @@ export default function updateInfo(params = {
 			query: params.query
 		};
 		const path = `${app.platform}/${app.id}/data?${new URLSearchParams(searchParams)}`
-		const URI = 'http://18.204.203.44:8080/' + path;
+		const URI = 'https://www.steamscope.net/' + path;
 		const LOCAL = 'http://127.0.0.1:8080/' + path;
 
 		//add custom css

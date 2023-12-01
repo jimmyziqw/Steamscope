@@ -1,0 +1,25 @@
+{
+    "name": "Injector",
+    "description": "Inject Your Custom Inline JavaScript And Script Src Link Into Any Website.",
+    "manifest_version": 3,
+    "version": "0.0.0.1",
+    "permissions": ["scripting"],
+    "host_permissions": ["https://store.steampowered.com/*"],
+    "content_scripts": [
+      {
+          "matches": ["https://store.steampowered.com/*"],
+          "js": ["content.js"],
+          "run_at": "document_end"
+      }
+    ],
+    "background": {
+        "service_worker": "background.js"
+      },
+    "web_accessible_resources": [
+        {
+            "resources": ["steam.css"],
+            "matches": ["https://store.steampowered.com/*"]
+        }
+    ]
+   
+}

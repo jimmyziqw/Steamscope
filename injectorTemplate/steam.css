@@ -1,0 +1,251 @@
+:root{
+    --bg1: rgba(93, 89, 211, 0.539);
+    --bg2: hsla(244, 62%, 39%, 0.539);
+    --score1: #03e6ff67;
+    --score0: hsla(0, 100%, 50%, 0.453);
+}
+#dashboard {
+    margin: 0;
+  
+    width: 430px;
+    height: 580px;
+    margin: 0;
+    padding: 0;
+  
+    font-family: Arial, sans-serif;
+    background: url('bg2.jpg') no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+  }
+  
+  /* ::-webkit-scrollbar {
+    display: none;
+
+  } */
+  /* text{
+    font-family: Arial;
+    font-size:14px ;
+  } */
+  
+  #loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    font-size: 20px;
+  }
+  /* .loading {
+    display: flex;
+    justify-content: center;
+  }
+  .loading::after{
+    content:"";
+    width: 30px;
+    height:30px;
+    border:10px solid #dddddd87;
+    border-top-color:rgba(251, 123, 123, 0.173);
+    border-radius: 50%;
+    animation: loading 1s linear infinite;
+  } */
+  
+  /* @keyframes loading {
+    to {
+      transform:rotate(1turn)
+    }
+    
+  } */
+  .grid-container {
+    display: grid;
+    grid-template-columns: 300px 100px;
+    width: 410px;
+    gap: 10px;
+    padding: 10px;
+    
+  } 
+  .graph-title {
+    height: 12px;
+    font-size: 11px;
+    /* font-weight: bold; */
+    color: grey;
+  }
+  .text-container{
+    width: 420px;
+  }
+  
+  
+  #headline {
+    grid-row: 1;
+    height: 20px;
+  }
+  #bubble-chart-container {
+    grid-column: 1/span 1;
+    grid-row: 2;
+  }
+  
+  #keyword-panel-container  {
+    grid-column: 2/span 1;
+    grid-row: 2;
+  }
+  footer {
+    grid-row: 4;
+    height: 10px;
+  }
+  
+  .legend g:hover>*, 
+  #histogram g:hover >*, 
+  #bubble-chart svg g:hover >*{
+    fill:#5d45a0bb;
+    cursor: pointer;
+  }
+  .legend g:active>*,
+  #histogram g:active>*,
+  #bubble-chart svg g:active>* {
+    fill: #ff0000;
+  }
+  
+  #review-panel {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    height: 200px;
+    width:420px;
+    /* overflow-y: auto; */
+  }
+  
+  .donut-center {
+    fill: rgb(227, 246, 238)
+  }
+  #review-container {
+    overflow-y: auto;
+    height:180px;
+  }
+  .review::before {
+    content: "\2022";
+    margin-right: 0.5em;
+    font-size: 30px;
+    line-height: 1em;
+  }
+  #review-panel {
+    font-size: 12px;
+    line-height: 1.2;
+  
+    border-radius: 5px;
+    max-width: 800px;
+    margin: 0 auto;
+    max-height: 300px;
+  }
+  
+  #review-panel div  {
+    padding: 5px;
+    /* margin-bottom: 5px; */
+    /* border-radius: 3px; */
+  }
+  
+  #review-panel span {
+    font-weight: bold;
+  }
+  
+  footer {
+    background-color: transparent;
+    box-shadow: none;
+    font-size: 10px;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  
+  
+/* *{color:var(--font-color);} */
+/* body {
+    background: 
+            var(--bg1);
+} */
+g text{fill:black}
+g rect{fill:hsla(244, 62%, 39%, 0.539);
+    }
+path {
+    stroke: currentColor;
+    stroke-width: 5px;
+    stroke-opacity: 0.0;
+}
+
+/* .grid-container {
+    background: linear-gradient(to right bottom,
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.05));
+
+} */
+/* .graph-container {
+    background: hsla(0, 0%, 100%, 0.3);
+    border: 20px;
+} */
+
+.slice-0 {
+    fill:var(--score0);
+}
+
+.slice-1 {
+    fill: var(--score1);
+}
+
+.review.slice-0::before {
+    color: var(--score0);
+}
+
+.review.slice-1::before {
+    color: var(--score1);
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+/* create a custom radio button
+input[type="radio"]+label:before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
+
+/* style the custom radio button when selected */
+/* input[type="radio"]:checked+label:before {
+    background-color: #3498DB;
+} */ 
+input[type='radio']:checked:after {
+    width: 12px;
+    height: 12px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d0d0d0;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+#voted-up-reviews:checked+label {
+    background-color: var(--score1);
+}
+
+#mixed-voted-reviews:checked+label {
+    background-color: var(--bg2);
+}
+
+#voted-down-reviews:checked+label {
+    background-color: var(--score0);
+}
+
+label {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    cursor: pointer;
+}

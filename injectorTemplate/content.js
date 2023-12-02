@@ -1,27 +1,27 @@
 const currSite = window.location.hostname
 
 if (currSite.includes('store.steampowered.com')) { 
-    alert("script is injected");
-    //TO DO: handle cannot find exception:
-    var targetElement = document.querySelector('.block.game_media_and_summary_ctn');
     initTopicModel();
-    // Create a link element for the stylesheet
-    var link = document.createElement('link');
-    link.href = chrome.runtime.getURL('steam.css'); // Get the URL of the stylesheet in your extension
-    link.type = 'text/css';
-    link.rel = 'stylesheet';
-
-// Append the link element to the head of the document
-var head = document.head || document.getElementsByTagName('head')[0];
-head.appendChild(link);
-
-
+    addStylesheet();
  }
 
-function initTopicModel() {
+function addStylesheet(){
+    var link = document.createElement('link');
+    link.href = chrome.runtime.getURL('steam.css'); 
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+    var head = document.head || document.getElementsByTagName('head')[0];
+    head.appendChild(link);
+}
 
+function initTopicModel() {
+    // Position to inject div element
+    var targetElement = document.querySelector('.block.game_media_and_summary_ctn');
+    //TODO: handle not found selector()
     if (document.getElementById('dashboard')) {
-        console.log('gridContainer already exists. Skipping creation.');
+        //clear svg ang g elements when switch radio button
+        document.getElementById("bubble-chart").innerHTML="";
+        document.getElementById("keyword-panel").innerHTML="";
         return;
     }
     // Create main grid container
@@ -39,9 +39,9 @@ function initTopicModel() {
 
     // Radio buttons
     var radioButtons = [
-        {id: 'voted-down-reviews', label: 'Voted Down', checked: true},
-        {id: 'mixed-voted-reviews', label: 'Mixed Reviews', checked: true},
-        {id: 'voted-Up-reviews', label: 'Voted Up', checked: false}
+        {id: 'voted-down-reviews', label: 'Voted Down', checked: false},
+        {id: 'voted-mixed-reviews', label: 'Mixed Reviews', checked: true},
+        {id: 'voted-up-reviews', label: 'Voted Up', checked: false}
     ];
 
     radioButtons.forEach(function(btn) {

@@ -1,7 +1,5 @@
-1. yellowish bg in icon img
-2. feature img has searchbar 
-    - very home made feeling
-    - add more img
-3. somehow fix backend or make it frontend
-    - scale with kubernete
-4.
+1. fix radio button
+2. fix review footer
+3. graph overlapping
+4. fonts and color: change graph title to steam blue...
+5. hover to show . OR LIGHTEN...

@@ -1,22 +1,27 @@
-// import updateInfo from './popup2.js'
+//TODO:radio button fix... after delete html, button function isn't running 
 
 //---legend---
-// document.getElementById('legend-radio-buttons').addEventListener('change', function (event) {
-//     let value = event.target.value;
-//     // Your logic for each legend goes here
-//     if (value === "mixed") {
-//         localStorage.setItem("query", JSON.stringify({}));
-//     } else if (value === "up") {
-//         localStorage.setItem("query", JSON.stringify({ sentiment: 1 }));
-//     } else {
-//         localStorage.setItem("query", JSON.stringify({ sentiment: 0 }));
-//     }
-//     //invoke loading screen
-//     let loadingScreen = document.getElementById("loading");
-//     loadingScreen.innerHTML = "Analyzing Reviews ..."
-//     loadingScreen.style.display = "flex";
-//     updateInfo();
-// });
+function addRadioButtonEvent(){
+    document.getElementById('legend-radio-buttons').addEventListener('change', function (event) {
+    let value = event.target.value;
+    // Your logic for each legend goes here
+    if (value === "voted-mixed-reviews") {
+        console.log('voted -mixed button pressed');
+        localStorage.setItem("query", JSON.stringify({}));
+    } else if (value === "voted-up-reviews") {
+        localStorage.setItem("query", JSON.stringify({ sentiment: 1 }));
+    } else {
+        console.log("down review button pressed");
+        localStorage.setItem("query", JSON.stringify({ sentiment: 0 }));
+    }
+    //invoke loading screen
+    // let loadingScreen = document.getElementById("loading");
+    // loadingScreen.innerHTML = "Analyzing Reviews ..."
+    // loadingScreen.style.display = "flex";
+    updateInfo();
+});
+}
+
  function showBubbleChart(data) {
     //load data for three panels
     const circleArray = data["bubble-chart-data"]
@@ -107,7 +112,7 @@ pieGroups.each(function(d) {
         .attr("d", arcGenerator)
         .attr("class", d=> `slice-${d.data.label}`)
 });
-       
+    addRadioButtonEvent();   
     showHistogram(0, keywordsWeights, docs);     
 
 
@@ -126,10 +131,8 @@ pieGroups.each(function(d) {
 }
 //canvas 2: histogram: word per topic;
 function showHistogram(topic_idx, data, docs){
-    //console.log(docs);
     var wordsFreqArray = data.map(x=>x.map(y=>y[1]))[topic_idx];
     var topWordsArray = data.map(x=>x.map(y=>y[0]))[topic_idx];
-    //console.log(wordsFreqArray);
     var canvasWidth = 100; 
     var canvasHeight = 300;
     const histTopMargin = 10;
@@ -160,7 +163,7 @@ function showHistogram(topic_idx, data, docs){
         .append("text")
         .attr("x", 10)
         .attr("y", function(d,i){return histTopMargin+(i+textOffset)*(barHeight+barSpaceHeight)})
-        .attr("font-size","18px")
+        .attr("font-size","13px")
         .attr("font-family", "Serif, sans-serif")
         .text(x=>x);
     
@@ -171,9 +174,10 @@ function showHistogram(topic_idx, data, docs){
 }
     
 //canvas 3: query representative 
-const parentElement = document.getElementById("review-container");
 
 function showRepresentativeDocs(keyword, topicKeywords, reviews) {
+    const parentElement = document.getElementById("review-container");
+    //console.log("review container:" ,parentElement);
     const reviewWithKeyword = reviews.filter(x => x.review.includes(keyword));
     const docQueried = findTopNDocumentsByDensity(reviewWithKeyword, topicKeywords, "max")
     
@@ -203,13 +207,9 @@ function highlightDocs(keywords, text){
 //  keywords conversion with regular expression
     if (Array.isArray(keywords)){
         keywords = keywords.join("|")
-        //console.log(text)
     } 
     var sentences = text.split(/(?<=[.!?])\s+(?=[A-Z])/);
-    //console.log(sentences);
-
     var selectedSentences = sentences.filter(x => x.includes(keywords))
-    //console.log(selectedSentences)
     var stext = selectedSentences.join('...')
 
     const regex = new RegExp(keywords, 'gi');
@@ -221,7 +221,6 @@ function highlightDocs(keywords, text){
 
 function countDistinctKeywords(doc, keywords) {
     let count = 0;
-    //console.log(doc, keywords);
     keywords.forEach((keyword) => {
         if (doc.includes(keyword)) {
             count++;

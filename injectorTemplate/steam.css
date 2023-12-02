@@ -5,31 +5,13 @@
     --score0: hsla(0, 100%, 50%, 0.453);
 }
 #dashboard {
-    margin: 0;
+    margin: 0 auto; /* For horizontal centering */
+    width: 900px; /* Adjust width as per your design */
+    max-width: 100%;
+}
   
-    width: 430px;
-    height: 580px;
-    margin: 0;
-    padding: 0;
   
-    font-family: Arial, sans-serif;
-    background: url('bg2.jpg') no-repeat center center fixed;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-  }
-  
-  /* ::-webkit-scrollbar {
-    display: none;
-
-  } */
-  /* text{
-    font-family: Arial;
-    font-size:14px ;
-  } */
-  
-  #loading {
+#loading {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,41 +19,26 @@
     text-align: center;
     font-size: 20px;
   }
-  /* .loading {
-    display: flex;
-    justify-content: center;
-  }
-  .loading::after{
-    content:"";
-    width: 30px;
-    height:30px;
-    border:10px solid #dddddd87;
-    border-top-color:rgba(251, 123, 123, 0.173);
-    border-radius: 50%;
-    animation: loading 1s linear infinite;
-  } */
-  
-  /* @keyframes loading {
-    to {
-      transform:rotate(1turn)
-    }
-    
-  } */
-  .grid-container {
+
+.grid-container {
     display: grid;
-    grid-template-columns: 300px 100px;
+    place-items: center;
+    grid-template-columns: 3fr 1fr 6fr ;
     width: 410px;
     gap: 10px;
     padding: 10px;
     
   } 
-  .graph-title {
-    height: 12px;
-    font-size: 11px;
+.graph-title {
+    position: relative;
+    top:5px;
+
+    font-size: 13px;
+    padding:5px;
     /* font-weight: bold; */
     color: grey;
   }
-  .text-container{
+.text-container{
     width: 420px;
   }
   
@@ -90,36 +57,18 @@
     grid-row: 2;
   }
   footer {
-    grid-row: 4;
+    grid-row: 3;
     height: 10px;
   }
   
-  .legend g:hover>*, 
-  #histogram g:hover >*, 
-  #bubble-chart svg g:hover >*{
-    fill:#5d45a0bb;
-    cursor: pointer;
-  }
-  .legend g:active>*,
-  #histogram g:active>*,
-  #bubble-chart svg g:active>* {
-    fill: #ff0000;
-  }
-  
   #review-panel {
-    grid-column: 1 / span 2;
-    grid-row: 3;
-    height: 200px;
-    width:420px;
-    /* overflow-y: auto; */
+    grid-column: 3/span 1 ;
+    grid-row: 2;
   }
   
-  .donut-center {
-    fill: rgb(227, 246, 238)
-  }
   #review-container {
     overflow-y: auto;
-    height:180px;
+    height: 300px;
   }
   .review::before {
     content: "\2022";
@@ -129,18 +78,12 @@
   }
   #review-panel {
     font-size: 12px;
-    line-height: 1.2;
+    line-height: 1.1;
   
-    border-radius: 5px;
-    max-width: 800px;
+
+
     margin: 0 auto;
-    max-height: 300px;
-  }
-  
-  #review-panel div  {
-    padding: 5px;
-    /* margin-bottom: 5px; */
-    /* border-radius: 3px; */
+
   }
   
   #review-panel span {
@@ -155,13 +98,21 @@
     margin-bottom: 0;
   }
   
-  
-/* *{color:var(--font-color);} */
-/* body {
-    background: 
-            var(--bg1);
-} */
-g text{fill:black}
+  .donut-center {
+    fill: rgb(227, 246, 238)
+  }  
+.legend g:hover>*, 
+#histogram g:hover >*, 
+#bubble-chart svg g:hover >*{
+fill:#29223abb;
+cursor: pointer;
+}
+.legend g:active>*,
+#histogram g:active>*,
+#bubble-chart svg g:active>* {
+fill: #ff0000;
+}
+g text{fill:whitesmoke}
 g rect{fill:hsla(244, 62%, 39%, 0.539);
     }
 path {
@@ -169,17 +120,6 @@ path {
     stroke-width: 5px;
     stroke-opacity: 0.0;
 }
-
-/* .grid-container {
-    background: linear-gradient(to right bottom,
-            rgba(255, 255, 255, 0.1),
-            rgba(255, 255, 255, 0.05));
-
-} */
-/* .graph-container {
-    background: hsla(0, 0%, 100%, 0.3);
-    border: 20px;
-} */
 
 .slice-0 {
     fill:var(--score0);
@@ -201,21 +141,6 @@ input[type="radio"] {
     display: none;
 }
 
-/* create a custom radio button
-input[type="radio"]+label:before {
-    content: "";
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-}
-
-/* style the custom radio button when selected */
-/* input[type="radio"]:checked+label:before {
-    background-color: #3498DB;
-} */ 
 input[type='radio']:checked:after {
     width: 12px;
     height: 12px;
@@ -234,7 +159,7 @@ input[type='radio']:checked:after {
     background-color: var(--score1);
 }
 
-#mixed-voted-reviews:checked+label {
+#voted-mixed-reviews:checked+label {
     background-color: var(--bg2);
 }
 

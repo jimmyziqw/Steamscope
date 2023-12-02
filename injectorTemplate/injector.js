@@ -1,16 +1,11 @@
-// Get active tab's hostname
-//import {updateReviews} from './steamDataloader.js';
+
 const site = window.location.hostname
 
 if (site.includes('store.steampowered.com')) { 
-    alert("script is injected");
+    //alert("script is injected");
     //TO DO: handle cannot find exception:
     updateInfo();
-
- }
-
-
- 
+}
 
 function showErrorMessage(message) {
     containerDiv.textContent = message; // Replace entire content with the message
@@ -42,23 +37,22 @@ function getIdByUrl(url) {
 function updateInfo(params = {
     numOfTopics: localStorage.getItem('num-of-topics'),
     numOfReviews: localStorage.getItem('num-of-reviews'),
-    query: JSON.stringify({}),//localStorage.getItem('query'),
+    query: localStorage.getItem('query'),
     dataInCache: localStorage.getItem('data-in-cache')
 }) {
     const tabURL = window.location.toString();
+    console.log("query: ", params.query);
 
     // Extract the necessary information from the URL
     const app = getIdByUrl(tabURL);
     let searchParams = {
-        params: 7,//params.numOfTopics,
+        params: params.numOfTopics,
         query: params.query
     };
     const path = `${app.platform}/${app.id}/data?${new URLSearchParams(searchParams)}`;
     const URI = 'https://www.steamscope.net/' + path;
     //const LOCAL = 'https://127.0.0.1:8080/' + path;
 
-    // Add custom CSS
-    addStylesheet(app.platform);
     const dataInCache = JSON.parse(params.dataInCache);
 
     // GET data from DB; If not present then GET from API then POST data
@@ -67,6 +61,12 @@ function updateInfo(params = {
             if (isQueryEmpty(params.query)) {
                 cacheReviewsData(app.id, responseData.reviews);
             }
+            //TODO: handle replication
+            // if (document.getElementById('dashboard')) {
+            //     document.getElementById('dashboard').remove();
+            //     // console.log('Review dashboard already exists. Skipping creation.');
+            //     // return;
+            // }
             initTopicModel();
             showBubbleChart(responseData);
         } else if ("errorMessage" in responseData) {
@@ -102,13 +102,7 @@ function updateInfo(params = {
     updateReviewsAndHandleResponse(app, params, dataInCache, URI);
     
 }
-function addStylesheet(platform) {
-	//add dynamic css
-	const linkElement = document.createElement("link");
-	linkElement.rel = "stylesheet";
-	linkElement.href = platform + ".css";
-	document.head.appendChild(linkElement);
-}
+
 async function getReviewsPerRequest(appid, params) {
     const url = `https://store.steampowered.com/appreviews/${appid}`;
     const response = await fetch(url + "?" + new URLSearchParams(params));

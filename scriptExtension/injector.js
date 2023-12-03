@@ -2,8 +2,6 @@
 const site = window.location.hostname
 
 if (site.includes('store.steampowered.com')) { 
-    //alert("script is injected");
-    //TO DO: handle cannot find exception:
     updateInfo();
 }
 

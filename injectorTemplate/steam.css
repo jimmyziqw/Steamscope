@@ -1,12 +1,14 @@
 :root{
-    --bg1: rgba(93, 89, 211, 0.539);
-    --bg2: hsla(244, 62%, 39%, 0.539);
     --score1: #03e6ff67;
-    --score0: hsla(0, 100%, 50%, 0.453);
+    --score0: hsla(0, 76%, 48%, 0.453);
+    --steam-normal:#C6D4DF;
+    --steam-subtitle:#556772;
+    --steam-tag:#67C0F4;
+    --steam-btn-bg:#67C0F433;
 }
 #dashboard {
-    margin: 0 auto; /* For horizontal centering */
-    width: 900px; /* Adjust width as per your design */
+    margin: 0 auto; 
+    width: 900px; 
     max-width: 100%;
 }
   
@@ -25,123 +27,107 @@
     place-items: center;
     grid-template-columns: 3fr 1fr 6fr ;
     width: 410px;
-    gap: 10px;
-    padding: 10px;
-    
+    row-gap: 0px; 
+    column-gap: 10px;
   } 
 .graph-title {
     position: relative;
-    top:5px;
-
     font-size: 13px;
     padding:5px;
-    /* font-weight: bold; */
-    color: grey;
+    color: var(--steam-subtitle);
   }
 .text-container{
     width: 420px;
   }
-  
-  
-  #headline {
-    grid-row: 1;
-    height: 20px;
-  }
-  #bubble-chart-container {
-    grid-column: 1/span 1;
-    grid-row: 2;
-  }
-  
-  #keyword-panel-container  {
-    grid-column: 2/span 1;
-    grid-row: 2;
-  }
-  footer {
-    grid-row: 3;
-    height: 10px;
-  }
-  
-  #review-panel {
-    grid-column: 3/span 1 ;
-    grid-row: 2;
-  }
-  
-  #review-container {
-    overflow-y: auto;
-    height: 300px;
-  }
-  .review::before {
-    content: "\2022";
-    margin-right: 0.5em;
-    font-size: 30px;
-    line-height: 1em;
-  }
-  #review-panel {
-    font-size: 12px;
-    line-height: 1.1;
-  
+#headline{
+  justify-self: start;
+  position: relative;
+  grid-row:1;
+  grid-column:1/span 2;
+  font-size: 13px;
+  padding:5px;
+  color: var(--steam-subtitle);
+  text-align:left;
+}
+#bubble-chart-container {
+  grid-column: 1/span 1;
+  grid-row: 2;
+}
+#keyword-panel-container  {
+  grid-column: 2/span 1;
+  grid-row: 2;
+}
+#review-panel {
+  grid-column: 3/span 1 ;
+  grid-row: 2;
+}
 
-
-    margin: 0 auto;
-
-  }
-  
-  #review-panel span {
-    font-weight: bold;
-  }
-  
-  footer {
-    background-color: transparent;
-    box-shadow: none;
-    font-size: 10px;
-    padding: 0;
-    margin-bottom: 0;
-  }
-  
-  .donut-center {
-    fill: rgb(227, 246, 238)
-  }  
+#review-container {
+  overflow-y: auto;
+  height: 300px;
+}
+.review::before {
+  content: "\2022";
+  margin-right: 0.5em;
+  font-size: 30px;
+  line-height: 1em;
+}
+#review-panel {
+  font-size: 12px;
+  line-height: 1.1;
+  margin: 0 auto;
+}
+#review-panel span {
+  font-weight: bold;
+}
+.donut-center {
+  fill: rgb(227, 246, 238)
+}  
 .legend g:hover>*, 
 #histogram g:hover >*, 
 #bubble-chart svg g:hover >*{
-fill:#29223abb;
-cursor: pointer;
+  fill:var(--steam-btn-bg);
+  cursor: pointer;
 }
 .legend g:active>*,
 #histogram g:active>*,
 #bubble-chart svg g:active>* {
-fill: #ff0000;
+  fill: #ff0000;
 }
-g text{fill:whitesmoke}
-g rect{fill:hsla(244, 62%, 39%, 0.539);
-    }
+g text{
+  fill:var(--steam-normal)
+}
+g rect{
+  fill:var(--steam-btn-bg);
+}
 path {
     stroke: currentColor;
     stroke-width: 5px;
     stroke-opacity: 0.0;
 }
-
 .slice-0 {
     fill:var(--score0);
 }
-
 .slice-1 {
     fill: var(--score1);
 }
-
 .review.slice-0::before {
     color: var(--score0);
 }
-
 .review.slice-1::before {
     color: var(--score1);
 }
-
 input[type="radio"] {
-    display: none;
+  margin-right: 0.5ch; 
+  margin-left: 1.3ch;
 }
 
-input[type='radio']:checked:after {
+/* 
+input[type="radio"] {
+    display: none;
+} */
+
+/* input[type='radio']:checked:after {
     width: 12px;
     height: 12px;
     border-radius: 15px;
@@ -153,24 +139,25 @@ input[type='radio']:checked:after {
     display: inline-block;
     visibility: visible;
     border: 2px solid white;
-}
+} */
 
 #voted-up-reviews:checked+label {
-    background-color: var(--score1);
+    color: var(--score1);
 }
 
 #voted-mixed-reviews:checked+label {
-    background-color: var(--bg2);
+    color: var(--steam-btn-bg);
 }
 
 #voted-down-reviews:checked+label {
-    background-color: var(--score0);
+    color: var(--score0);
 }
 
 label {
     display: inline-block;
-    padding: 5px;
-    border: 1px solid #d0d0d0;
-    border-radius: 4px;
     cursor: pointer;
+}
+
+#legend-radio-buttons{
+  display: inline-block;
 }

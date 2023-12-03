@@ -18,6 +18,7 @@ function addRadioButtonEvent(){
     // let loadingScreen = document.getElementById("loading");
     // loadingScreen.innerHTML = "Analyzing Reviews ..."
     // loadingScreen.style.display = "flex";
+
     updateInfo();
 });
 }
@@ -65,7 +66,9 @@ function addRadioButtonEvent(){
         .attr("text-anchor", "middle")
         .attr("dy", ".3em")
         .text((d, i) => topKeywordPerTopic[i])
-        .attr("transform", d => `translate(${0},${-d.r})`);
+        .attr("transform", d => `translate(${0},${-d.r})`)
+        .attr("font-size","14px")
+        .attr("font-family", "Arial, Serif, sans-serif");
                       
 
     const pie = d3.pie()
@@ -164,7 +167,7 @@ function showHistogram(topic_idx, data, docs){
         .attr("x", 10)
         .attr("y", function(d,i){return histTopMargin+(i+textOffset)*(barHeight+barSpaceHeight)})
         .attr("font-size","13px")
-        .attr("font-family", "Serif, sans-serif")
+        .attr("font-family", "Arial, Serif, sans-serif")
         .text(x=>x);
     
     bars.on("click",function(event,d){
@@ -199,9 +202,20 @@ function showRepresentativeDocs(keyword, topicKeywords, reviews) {
             divElement.innerHTML = highlightDocs(keyword, docQueried[i].review);
             parentElement.appendChild(divElement);
         }
-        const searchMessage = document.getElementById("search-result");
-        searchMessage.innerHTML = `${docQueried.length} reviews found`
-    };
+        
+        const reviewPanel = document.getElementById("review-panel");
+        if (reviewPanel) {
+            const graphTitles = reviewPanel.getElementsByClassName("graph-title");
+            if (graphTitles.length > 0) {
+                let reviewPanelTitle = graphTitles[0];
+                reviewPanelTitle.innerHTML = ` Reviews (${docQueried.length} reviews found)`;
+            } else {
+                console.log("No elements with the class 'graph-title' were found inside the 'review-panel'.");
+            }
+        } else {
+            console.log("No element with the ID 'review-panel' was found.");
+        }
+    }
 }
 function highlightDocs(keywords, text){
 //  keywords conversion with regular expression
@@ -257,5 +271,5 @@ function findTopNDocumentsByDensity(documents, keywords, n) {
 }
 
 function forceDirectedGraph() {
-    //add rebel force between bubbles to avoid overlap
+    //TODO: add rebel force between bubbles 
 }

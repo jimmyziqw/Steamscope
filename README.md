@@ -5,8 +5,8 @@ With Steam Topicscope, you get:
 - Review Dashboard: A user-friendly interface presenting a clear summary of the public sentiment.
 
 ## Installation
-  [Click to install extension.](https://chrome.google.com/webstore/detail/steam-topicscope/hiokkalkkfmefjofkopipheccgdgekgh?hl=en&authuser=0)
+  [Link to Chrome Extension](https://chromewebstore.google.com/detail/steamscope/ppnfnkmopibenekcldhbbaegpklpljfe?hl=en-US)
   
 ## Demo
-  ![alt text](feature.jpg)
+  ![Demo](store-content/feature1.png)
 

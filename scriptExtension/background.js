@@ -1,6 +1,4 @@
 try{
-
-    //ON page change
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
       if(changeInfo.status == 'complete'){
         console.log("executing injector js")
@@ -10,8 +8,6 @@ try{
         });
       }
     });
-  
-  
   }catch(e){
     console.log(e);
   }

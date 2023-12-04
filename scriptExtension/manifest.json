@@ -1,6 +1,6 @@
 {
-    "name": "Injector",
-    "description": "Inject Your Custom Inline JavaScript And Script Src Link Into Any Website.",
+    "name": "Steamscope",
+    "description": "Capture steam game reviews at one glance",
     "manifest_version": 3,
     "version": "0.0.0.1",
     "permissions": ["scripting"],

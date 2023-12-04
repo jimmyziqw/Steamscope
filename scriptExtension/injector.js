@@ -41,7 +41,7 @@ function updateInfo(params = {
     const tabURL = window.location.toString();
     console.log("query: ", params.query);
 
-    // Extract the necessary information from the URL
+    // Extract information from the URL
     const app = getIdByUrl(tabURL);
     let searchParams = {
         params: params.numOfTopics,
@@ -59,12 +59,6 @@ function updateInfo(params = {
             if (isQueryEmpty(params.query)) {
                 cacheReviewsData(app.id, responseData.reviews);
             }
-            //TODO: handle replication
-            // if (document.getElementById('dashboard')) {
-            //     document.getElementById('dashboard').remove();
-            //     // console.log('Review dashboard already exists. Skipping creation.');
-            //     // return;
-            // }
             initTopicModel();
             showBubbleChart(responseData);
         } else if ("errorMessage" in responseData) {
@@ -88,17 +82,17 @@ function updateInfo(params = {
     function updateReviewsAndHandleResponse(app, params, dataInCache, url) {
         updateReviews(app.id, params.numOfReviews, dataInCache, url)
             .then(responseData => {
+                hideLoadingScreen();
                 console.log('Received response data:', responseData);
                 handleUpdateReviewsResponse(responseData, params, app);
             })
             .catch(err => {
                 console.error('Error in updateReviews:', err);
+                hideLoadingScreen();
             });
     }
     
-    // Usage
-    updateReviewsAndHandleResponse(app, params, dataInCache, URI);
-    
+    updateReviewsAndHandleResponse(app, params, dataInCache, URI);  
 }
 
 async function getReviewsPerRequest(appid, params) {
@@ -110,9 +104,7 @@ async function getReviewsPerRequest(appid, params) {
         const data = await response.json();  // convert the response to JSON format
         return data;
     }
-   
 }
-
 
 async function getReviewsFromAPI(appid, n, cursor = '*') {
     let reviews = [];
@@ -151,11 +143,23 @@ function showErrorMessage(message) {
     const loadingScreen = document.getElementById("loading");
     loadingScreen.innerHTML = message;
 }
-function loadingProgress(message) { //TODO: temp off for debugging
-    //const loading = document.getElementById("loading");
-    //loading.innerHTML = message;
-}
 
+function hideLoadingScreen() {
+    var loadingScreen = document.getElementById("loading-screen");
+    if (loadingScreen) {
+        loadingScreen.style.display = "none";
+    } else {
+        console.error("Loading screen element not found");
+    }
+}
+function displayLoadingScreen() {
+    var loadingScreen = document.getElementById("loading-screen");
+    if (loadingScreen) {
+        loadingScreen.style.display = "flex";
+    } else {
+        console.error("Loading screen element not found");
+    }
+}
 async function updateReviews(appid, n, data, url) {
     const response = await fetch(url);
     if (response.status == 200) {
@@ -166,7 +170,6 @@ async function updateReviews(appid, n, data, url) {
         return response.json();
        
     } else if (response.status == 204) {
-        
         console.log("data not received from db!");
         let reviewObj;
         if (appid === data.appid) {
@@ -175,7 +178,6 @@ async function updateReviews(appid, n, data, url) {
         } else {
             console.log("new scrap");
             reviewObj = await getReviewsFromAPI(appid, n);
-
             reviewObj.reviews = steamFormatter(reviewObj.reviews);
             loadingProgress("Analyzing reviews ...");
         }
@@ -183,9 +185,7 @@ async function updateReviews(appid, n, data, url) {
         return postData(url, reviewObj.reviews)
     } else {
         console.error("error in GET method, status", response.status);
-    } 
-    
-    
+    }    
 }
 async function postData(uri, postData) {
     if (postData.length <= 100) {
@@ -193,7 +193,6 @@ async function postData(uri, postData) {
         console.log(`Not enough data. Current number: ${postData.length}`);
         return
     }
-
     try {
         const response = await fetch(uri, {
             method: 'POST',
@@ -220,6 +219,5 @@ function steamFormatter(data) {
             review,
             sentiment: voted_up ? 1 : 0
         }));
-
     return newData;
 }

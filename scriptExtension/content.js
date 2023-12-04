@@ -3,7 +3,7 @@ const currSite = window.location.hostname
 if (currSite.includes('store.steampowered.com')) { 
     initTopicModel();
     addStylesheet();
- }
+}
 
 function addStylesheet(){
     var link = document.createElement('link');
@@ -21,6 +21,7 @@ function initTopicModel() {
         console.log("target element not found!");
     }
     
+     
     //clear graph elements when switch radio button
     if (document.getElementById('dashboard')) { 
         document.getElementById("bubble-chart").innerHTML="";
@@ -28,9 +29,12 @@ function initTopicModel() {
         return;
     }
     // Create main grid container
+    var dashboardWrapper = document.createElement("div");
+    dashboardWrapper.id = "dashboard-wrapper";
     var gridContainer = document.createElement('div');
     gridContainer.className = 'grid-container';
     gridContainer.id = 'dashboard';
+    
 
     // Create headline section
     var headline = document.createElement('div');
@@ -66,7 +70,11 @@ function initTopicModel() {
         toolsDiv.appendChild(label);
     });
 
-    //gridContainer.appendChild(headline);
+    var loadingScreen = document.createElement("div");
+    loadingScreen.id = "loading-screen";
+    var loadingAnimation = document.createElement("div");
+    loadingAnimation.className = "loading-animation";
+    loadingScreen.appendChild(loadingAnimation);
 
     // Create graph containers
     var graphs = [
@@ -94,5 +102,20 @@ function initTopicModel() {
     });
     
     gridContainer.appendChild(headline);
-    targetElement.appendChild(gridContainer);
+    dashboardWrapper.appendChild(loadingScreen);
+    dashboardWrapper.appendChild(gridContainer);
+    
+    targetElement.appendChild(dashboardWrapper);
+}
+
+function addLoadingScreen(){
+    if (document.getElementById("loading-screen")){
+        return;
+    } else {
+        console.log("creating loading screen ...");
+    }
+    var loadingScreen = document.createElement("div");
+    loadingScreen.id = "loading-screen";
+    document.getElementById("dashboard").appendChild(loadingScreen);
+
 }

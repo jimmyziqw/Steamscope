@@ -3,7 +3,7 @@ name: Zip Extension
 on:
   push:
     paths:
-      - 'popupExtension/**'
+      - 'scriptExtension/**'
 
 jobs:
   zip:
@@ -17,7 +17,7 @@ jobs:
         run: sudo apt-get install zip
 
       - name: Zip extension folder
-        run: zip -r popupExtension.zip popupExtension
+        run: zip -r scriptExtension.zip scriptExtension
 
       - name: Commit and push zip file
         env:
@@ -25,6 +25,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add popupExtension.zip
-          git commit -m "Auto-generated zip of popupExtension folder" || echo "No changes to commit"
+          git add scriptExtension.zip
+          git commit -m "Auto-generated zip of scriptExtension folder" || echo "No changes to commit"
           git push

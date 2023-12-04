@@ -1,6 +1,3 @@
-//TODO:radio button fix... after delete html, button function isn't running 
-
-//---legend---
 function addRadioButtonEvent(){
     document.getElementById('legend-radio-buttons').addEventListener('change', function (event) {
     let value = event.target.value;
@@ -14,16 +11,13 @@ function addRadioButtonEvent(){
         console.log("down review button pressed");
         localStorage.setItem("query", JSON.stringify({ sentiment: 0 }));
     }
-    //invoke loading screen
-    // let loadingScreen = document.getElementById("loading");
-    // loadingScreen.innerHTML = "Analyzing Reviews ..."
-    // loadingScreen.style.display = "flex";
-
+    displayLoadingScreen()
     updateInfo();
 });
 }
 
  function showBubbleChart(data) {
+
     //load data for three panels
     const circleArray = data["bubble-chart-data"]
     const keywordsWeights = data["keyword-weights"]

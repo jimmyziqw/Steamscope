@@ -40,18 +40,11 @@ async function getReviewsFromAPI(appid, n, cursor = '*') {
             break;
         }
         reviews = reviews.concat(response.reviews);
-        loadingProgress(`Collecting reviews ... (${reviews.length}/${n})`);
+        
     }
     return {reviews, cursor};
 }
-function showErrorMessage(message) {
-    const loadingScreen = document.getElementById("loading");
-    loadingScreen.innerHTML = message;
-}
-function loadingProgress(message) {
-    const loading = document.getElementById("loading");
-    loading.innerHTML = message;
-}
+
 
  async function updateReviews(appid, n, data, url) {
     const response = await fetch(url);
@@ -89,7 +82,6 @@ function loadingProgress(message) {
 }
 async function postData(uri, postData) {
     if (postData.length <= 100) {
-        showErrorMessage(`Not enough reviews to analyze. Find ${postData.length} reviews.`);
         console.log(`Not enough data. Current number: ${postData.length}`);
         return
     }

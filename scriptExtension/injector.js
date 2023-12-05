@@ -5,10 +5,6 @@ if (site.includes('store.steampowered.com')) {
     updateInfo();
 }
 
-function showErrorMessage(message) {
-    containerDiv.textContent = message; // Replace entire content with the message
-}
-
 function getIdByUrl(url) {
 	let appid;
 	let pattern = /https:\/\/store\.steampowered\.com\/app\/(\d+)\/([\w\d]+)/;
@@ -23,7 +19,6 @@ function getIdByUrl(url) {
 		};
 	} else if (!match && url.includes("store.steampowered.com")) {
 		console.log("Not in app page")
-		showErrorMessage("Please navigate to an app page");	
 		return
 	} else {
 		console.log("URL does not match the pattern, page to steam");
@@ -55,14 +50,16 @@ function updateInfo(params = {
 
     // GET data from DB; If not present then GET from API then POST data
     function handleUpdateReviewsResponse(responseData, params, app) {
-        if ("reviews" in responseData) {
+        if (responseData && "reviews" in responseData) {
             if (isQueryEmpty(params.query)) {
                 cacheReviewsData(app.id, responseData.reviews);
             }
             initTopicModel();
             showBubbleChart(responseData);
-        } else if ("errorMessage" in responseData) {
-            showErrorMessage(responseData.errorMessage);
+        } else{
+            var dashboard = document.getElementById("dashboard");
+            dashboard.innerHTML = "Not found enough data to analyze.";
+            
         }
     }
     
@@ -135,14 +132,11 @@ async function getReviewsFromAPI(appid, n, cursor = '*') {
             break;
         }
         reviews = reviews.concat(response.reviews);
-        loadingProgress(`Collecting reviews ... (${reviews.length}/${n})`);
+      
     }
     return {reviews, cursor};
 }
-function showErrorMessage(message) {
-    const loadingScreen = document.getElementById("loading");
-    loadingScreen.innerHTML = message;
-}
+
 
 function hideLoadingScreen() {
     var loadingScreen = document.getElementById("loading-screen");
@@ -179,7 +173,7 @@ async function updateReviews(appid, n, data, url) {
             console.log("new scrap");
             reviewObj = await getReviewsFromAPI(appid, n);
             reviewObj.reviews = steamFormatter(reviewObj.reviews);
-            loadingProgress("Analyzing reviews ...");
+       
         }
         console.log("posting data..")
         return postData(url, reviewObj.reviews)
@@ -189,7 +183,7 @@ async function updateReviews(appid, n, data, url) {
 }
 async function postData(uri, postData) {
     if (postData.length <= 100) {
-        showErrorMessage(`Not enough reviews to analyze. Find ${postData.length} reviews.`);
+        
         console.log(`Not enough data. Current number: ${postData.length}`);
         return
     }

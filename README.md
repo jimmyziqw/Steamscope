@@ -8,5 +8,5 @@ With Steam Topicscope, you get:
   [Link to Chrome Extension](https://chromewebstore.google.com/detail/steamscope/ppnfnkmopibenekcldhbbaegpklpljfe?hl=en-US)
   
 ## Demo
-  ![Demo](store-content/feature1.png)
+  ![Demo](store-content/demo1.png)
 

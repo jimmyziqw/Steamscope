@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from datetime import datetime
 import json
 import logging
-from datetime import datetime
+
 
 # load local module
 from src.topic_visualizer import args, TopicVisualizer

@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 class ConnectMongo():
     def __init__(self, db_name="tracker", collection_name="steam"):
-        #folder store credentials
+
         self.collection_name = collection_name
         AUTH_PATH = os.path.join("cred", "cred.txt")
         try: 
@@ -15,7 +15,7 @@ class ConnectMongo():
                 password = f.readline().strip()
             
                 uri = f"mongodb+srv://{username}:{password}@cluster0.m9bkn9t.mongodb.net/?retryWrites=true&w=majority"
-
+        
         except FileNotFoundError:
             uri = "mongodb://localhost:27017/" 
 
@@ -26,10 +26,9 @@ class ConnectMongo():
         
         self.collection_names = db.list_collection_names()
         self.collection = db[collection_name]  
-        #logger.info("found collection in mongo")
+        logger.info("found collection in mongo")
         
     def non_empty(self):
-        print(self.collection_names, self.collection_name)
         return self.collection_name in self.collection_names
     
     def get_data(self, query):

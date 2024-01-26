@@ -7,10 +7,9 @@ async function getReviewsPerRequest(appid, params) {
     } else {
         const data = await response.json();  // convert the response to JSON format
         return data;
-    }
-   
+    } 
 }
-console.log("steamDataloader loaded");
+
 async function getReviewsFromAPI(appid, n, cursor = '*') {
     let reviews = [];
     let params = {
@@ -39,17 +38,14 @@ async function getReviewsFromAPI(appid, n, cursor = '*') {
             console.warn("no cursor in response", response);
             break;
         }
-        reviews = reviews.concat(response.reviews);
-        
+        reviews = reviews.concat(response.reviews);  
     }
     return {reviews, cursor};
 }
 
 
  async function updateReviews(appid, n, data, url) {
-    const response = await fetch(url);
-    
-    
+    const response = await fetch(url); 
     if (response.status == 200) {
         console.log("data received from db!");
         const data = response.json();
@@ -76,10 +72,9 @@ async function getReviewsFromAPI(appid, n, cursor = '*') {
         return postData(url, reviewObj.reviews)
     } else {
         console.error("error in GET method, status", response.status);
-    } 
-    
-    
+    }   
 }
+
 async function postData(uri, postData) {
     if (postData.length <= 100) {
         console.log(`Not enough data. Current number: ${postData.length}`);

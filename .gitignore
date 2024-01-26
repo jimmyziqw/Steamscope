@@ -18,19 +18,3 @@ TODO
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
-
-venv
-cred
-TODO.md
-__pycache__
-show_data
-utils
-node_modules
-extension
-sample.json
-transformers
-sentiment_output
-app.log
-get_app_profile_stat
-get_app_summary
-main

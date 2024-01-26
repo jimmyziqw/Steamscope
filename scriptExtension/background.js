@@ -5,7 +5,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
               files: ["settings.js", "dataloader.js", "d3.min.js", "dashboard.js", "injector.js"],
               target: {tabId: tab.id}
           }, (result) => {
-              // Handle any results or errors from the script execution
+              // TODO: handle error
           });
       } catch(e) {
           console.error('Error executing scripts:', e);

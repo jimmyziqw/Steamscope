@@ -1,0 +1,37 @@
+name: Update EC2 Instance
+
+on:
+  push:
+    paths-ignore:
+      - 'transformers/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy changes to EC2 instance
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          USER: ec2-user
+          HOST: ec2-18-204-203-44.compute-1.amazonaws.com
+          TARGET_DIR: game-review-summarizer
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          rsync -avz -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" --exclude=popupExtension --exclude=popupExtension.zip . $USER@$HOST:$TARGET_DIR
+          
+          # series of commands to be executed on the EC2 instance
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $USER@$HOST <<-EOF
+            cd $TARGET_DIR
+            git pull
+            source venv/bin/activate
+            pkill -f "python -m app"
+            nohup python -m app > /dev/null 2>&1 &
+
+          EOF
+
+          rm -f private_key.pem

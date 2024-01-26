@@ -16,20 +16,16 @@ function addRadioButtonEvent(){
 });
 }
 
- function showBubbleChart(data) {
-
+function showBubbleChart(data) {
     //load data for three panels
     const circleArray = data["bubble-chart-data"]
     const keywordsWeights = data["keyword-weights"]
     const docs = data['reviews'];
-    
-
     const topKeywordPerTopic = keywordsWeights.map(
         topic=>topic.map(
             keywordsFreqPair=>keywordsFreqPair[0]
             )[0]
     )
-
     //component 1: tsne visulization
     const width = 300;
     const height = 300;
@@ -45,7 +41,6 @@ function addRadioButtonEvent(){
             .domain([Math.min(...cy),Math.max(...cy)])
             .range([0+margin, height-margin]);
     
-
     const canvas1 = d3.select("#bubble-chart").append("svg").attr("width", width).attr("height", height);
     var circles = canvas1.selectAll("g")
                     .data(circleArray)
@@ -64,12 +59,10 @@ function addRadioButtonEvent(){
         .attr("font-size","14px")
         .attr("font-family", "Arial, Serif, sans-serif");
                       
-
     const pie = d3.pie()
         .value(d => d.value)
         .sort(null);
             
-        //color range
     const sentiments = circleArray.map(x=>Object.keys(x.sentiment).length);
     const maxScore = Math.max(...sentiments)
     let sentimentDomain;
@@ -79,30 +72,20 @@ function addRadioButtonEvent(){
         sentimentDomain = [1, 2, 3, 4, 5];
     } else if (maxScore ==1) {
         sentimentDomain = Object.keys(circleArray[0].sentiment).concat(["-1"]);
-
     }
-  
     
-        const color = d3.scaleOrdinal()
-        .domain(sentimentDomain)
-        .range(d3.schemeCategory10);
-    
-        const pieGroups = canvas1.selectAll(".pie-group")
-  .data(circleArray)
-  .join("g")
-  .attr("class", "pie-group")
-  .attr("transform", d=>`translate(${xScale(d.x)},${yScale(d.y)})`);
-
-  
+    const pieGroups = canvas1.selectAll(".pie-group")
+        .data(circleArray)
+        .join("g")
+        .attr("class", "pie-group")
+        .attr("transform", d=>`translate(${xScale(d.x)}, ${yScale(d.y)})`);
 
 pieGroups.each(function(d) {
-
     const arcGenerator = d3.arc()
         .innerRadius((d.r+minRadius) * Math.min(width, height)-10)
         .outerRadius((d.r+minRadius) * Math.min(width, height));
 
     const pieData = pie(Object.entries(d.sentiment).map(([key, value]) => ({ label: key, value })));
-
     d3.select(this).selectAll("path")
         .data(pieData)
         .join("path")
@@ -112,20 +95,16 @@ pieGroups.each(function(d) {
     addRadioButtonEvent();   
     showHistogram(0, keywordsWeights, docs);     
 
-
-
-    
     pieGroups.append("circle")
         .attr("r", d => (d.r + minRadius) * Math.min(width, height)) // Use the same radius as your pie chart
         .attr("fill", "transparent") // Make the circle transparent
         .style("cursor", "pointer") // Change the cursor style when hovering over the circle
         .on("click", function (event, d) {
-            //console.log(`showing topic ${d.topic_idx}`);
             d3.selectAll("#histogram").remove();
             showHistogram(d.topic_idx, keywordsWeights, docs);
-        });
-    
+        });    
 }
+
 //canvas 2: histogram: word per topic;
 function showHistogram(topic_idx, data, docs){
     var wordsFreqArray = data.map(x=>x.map(y=>y[1]))[topic_idx];
@@ -171,10 +150,8 @@ function showHistogram(topic_idx, data, docs){
 }
     
 //canvas 3: query representative 
-
 function showRepresentativeDocs(keyword, topicKeywords, reviews) {
     const parentElement = document.getElementById("review-container");
-    //console.log("review container:" ,parentElement);
     const reviewWithKeyword = reviews.filter(x => x.review.includes(keyword));
     const docQueried = findTopNDocumentsByDensity(reviewWithKeyword, topicKeywords, "max")
     
@@ -189,8 +166,6 @@ function showRepresentativeDocs(keyword, topicKeywords, reviews) {
     showReviews(maxDocNum);
     function showReviews(maxDocNum) {
         for (let i = 0; i < maxDocNum; i++) {
-            //console.log(i)
-    
             const divElement = document.createElement("div");
             divElement.setAttribute("class", `review slice-${docQueried[i].sentiment}`);
             divElement.innerHTML = highlightDocs(keyword, docQueried[i].review);
@@ -211,6 +186,7 @@ function showRepresentativeDocs(keyword, topicKeywords, reviews) {
         }
     }
 }
+
 function highlightDocs(keywords, text){
 //  keywords conversion with regular expression
     if (Array.isArray(keywords)){
@@ -225,7 +201,6 @@ function highlightDocs(keywords, text){
     const highlightedText = stext.replace(regex, replacement);
     return highlightedText
 }
-
 
 function countDistinctKeywords(doc, keywords) {
     let count = 0;
@@ -259,11 +234,6 @@ function findTopNDocumentsByDensity(documents, keywords, n) {
     const sortedDocuments = documentsWithKeywordDensity.sort(
         (a, b) => b.keywordDensity - a.keywordDensity
     );
-
-    // Return top n documents
     return sortedDocuments;
 }
 
-function forceDirectedGraph() {
-    //TODO: add rebel force between bubbles 
-}
